@@ -32,7 +32,7 @@ def test(dataloader, model, device, gt):
         pr_auc = auc(recall, precision)
         precision, recall, th = precision_recall_curve(list(gt), np.repeat(pred2, 16))
         pr_auc2 = auc(recall, precision)
-        return pr_auc, pr_auc2
+        return pr_auc, pr_auc2, pred, pred2 # pred, pred2 return하도록 수정
 
 
 

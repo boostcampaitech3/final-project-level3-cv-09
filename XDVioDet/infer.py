@@ -6,6 +6,7 @@ from dataset import Dataset
 from test import test
 import option
 import time
+import csv
 
 
 if __name__ == '__main__':
@@ -21,6 +22,10 @@ if __name__ == '__main__':
         {k.replace('module.', ''): v for k, v in torch.load('ckpt/wsanodet_mix2.pkl').items()})
     gt = np.load(args.gt)
     st = time.time()
-    pr_auc, pr_auc_online = test(test_loader, model, device, gt)
+    pr_auc, pr_auc_online, off, on = test(test_loader, model, device, gt)
     print('Time:{}'.format(time.time()-st))
     print('offline pr_auc:{0:.4}; online pr_auc:{1:.4}\n'.format(pr_auc, pr_auc_online))
+    # inference 결과 저장
+    np.save('off.npy', off)
+    np.save('on.npy', on)
+
