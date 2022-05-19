@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from model import Model
 from dataset import Dataset
-from test_index import test
+from test import test
 import option
 import time
 import csv
