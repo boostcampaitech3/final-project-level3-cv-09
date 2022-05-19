@@ -7,13 +7,18 @@ def test(dataloader, model, device, gt):
         model.eval()
         pred = torch.zeros(0).to(device)
         pred2 = torch.zeros(0).to(device)
+        indexes = []
         for i, input in enumerate(dataloader):
+            input, index = input
             input = input.to(device)
             logits, logits2 = model(inputs=input, seq_len=None)
             logits = torch.squeeze(logits)
             sig = torch.sigmoid(logits)
             sig = torch.mean(sig, 0)
             pred = torch.cat((pred, sig))
+
+            for j in range(len(sig)):       # 예측 값의 길이 만큼 리스트에 파일명 추가
+                indexes.append(index)
             '''
             online detection
             '''
@@ -32,7 +37,7 @@ def test(dataloader, model, device, gt):
         pr_auc = auc(recall, precision)
         precision, recall, th = precision_recall_curve(list(gt), np.repeat(pred2, 16))
         pr_auc2 = auc(recall, precision)
-        return pr_auc, pr_auc2, pred, pred2 # pred, pred2 return하도록 수정
+        return pr_auc, pr_auc2, pred, pred2, indexes
 
 
 

@@ -90,7 +90,7 @@ class Dataset(data.Dataset):
         if self.tranform is not None:
             features = self.tranform(features)
         if self.test_mode:
-            return features
+            return features, self.list[index].strip('\n')   # 파일명 return하도록 수정
 
         else:
             features = process_feat(features, self.max_seqlen, is_random=False)
