@@ -11,6 +11,7 @@ import os
 import os.path
 
 import cv2
+import glob
 
 def video_to_tensor(pic):
     """Convert a ``numpy.ndarray`` to tensor.
@@ -86,11 +87,50 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
     
     return dataset
 
+def get_duration(video_start, video_end):
+    dif_hour = int(video_end.split('-')[0]) - int(video_start.split('-')[0])
+    dif_min = int(video_end.split('-')[1]) - int(video_start.split('-')[1])
+    dif_sec = int(video_end.split('-')[2]) - int(video_start.split('-')[2])
+    return dif_hour*3600 + dif_min*60 + dif_sec
+
+def make_video_level_dataset(split_file, split, root, mode, num_classes=157):
+    # split_file = split
+    # split='testing'
+
+    dataset = []
+
+    files = glob.glob(root+'/*.mp4')
+    # print(files)
+    for file_path in files:
+        file_name = file_path.split('/')[-1]
+        video_name = file_name.split('_')[0]
+        video_start = file_name.split('_')[1]
+        video_end = file_name.split('_')[2]
+        violence_flag = file_name.split('_')[-1][0]
+
+        cap = cv2.VideoCapture(file_path)
+        num_frames = int(cap.get(7))
+        fps = int(cap.get(5))
+        duration = int(num_frames/fps)
+        # duration = get_duration(video_start, video_end)
+
+        label = np.zeros((num_frames), np.float32)
+        if violence_flag == 'A': # 폭력 영상
+            for fr in range(0,num_frames):
+                label[fr] = 1
+        elif violence_flag == 'B': # 비폭력 영상
+            for fr in range(0,num_frames):
+                label[fr] = 0
+        dataset.append((file_name, label, duration, num_frames))
+
+    return dataset
 
 class Charades(data_utl.Dataset):
 
     def __init__(self, split_file, split, root, mode, transforms=None, save_dir='', num=0):
         
+        # video-level로 dataset 불러올 때 주석 해제
+        # self.data = make_video_level_dataset(split_file, split, root, mode)
         self.data = make_dataset(split_file, split, root, mode)
         self.split_file = split_file
         self.transforms = transforms
