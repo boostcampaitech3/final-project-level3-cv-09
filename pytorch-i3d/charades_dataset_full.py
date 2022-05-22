@@ -115,10 +115,10 @@ def make_video_level_dataset(split_file, split, root, mode, num_classes=157):
         # duration = get_duration(video_start, video_end)
 
         label = np.zeros((num_frames), np.float32)
-        if violence_flag == 'A': # 폭력 영상
+        if violence_flag == 'B': # 폭력 영상
             for fr in range(0,num_frames):
                 label[fr] = 1
-        elif violence_flag == 'B': # 비폭력 영상
+        elif violence_flag == 'A': # 비폭력 영상
             for fr in range(0,num_frames):
                 label[fr] = 0
         dataset.append((file_name, label, duration, num_frames))
