@@ -66,8 +66,7 @@ class CenterCrop(object):
             PIL Image: Cropped image.
         """
         t, h, w, c = imgs.shape
-        # th, tw = self.size
-        th, tw = int(h/2), int(w/2)
+        th, tw = self.size
         i = int(np.round((h - th) / 2.))
         j = int(np.round((w - tw) / 2.))
 
@@ -93,10 +92,12 @@ class FirstCrop(object):
             PIL Image: Cropped image.
         """
         t, h, w, c = imgs.shape
-        # th, tw = self.size
-        th, tw = int(h/2), int(w/2)
+        th, tw = self.size
+        # th, tw = int(h/2), int(w/2)
+        # select_size = max(th, tw)
 
         return imgs[:, :th, :tw, :]
+        # return imgs[:, :select_size, :select_size, :]
 
 
     def __repr__(self):
@@ -119,10 +120,12 @@ class SecondCrop(object):
             PIL Image: Cropped image.
         """
         t, h, w, c = imgs.shape
-        # th, tw = self.size
-        th, tw = int(h/2), int(w/2)
+        th, tw = self.size
+        # th, tw = int(h/2), int(w/2)
+        # select_size = max(th, tw)
 
-        return imgs[:, :th, tw:, :]
+        return imgs[:, :th, w-tw:, :]
+        # return imgs[:, :select_size, w-select_size:, :]
 
 
     def __repr__(self):
@@ -150,10 +153,12 @@ class ThirdCrop(object):
             PIL Image: Cropped image.
         """
         t, h, w, c = imgs.shape
-        # th, tw = self.size
-        th, tw = int(h/2), int(w/2)
+        th, tw = self.size
+        # th, tw = int(h/2), int(w/2)
+        # select_size = max(th, tw)
 
-        return imgs[:, th:, tw:, :]
+        return imgs[:, h-th:, w-tw:, :]
+        # return imgs[:, h-select_size:, w-select_size:, :]
 
 
     def __repr__(self):
@@ -181,10 +186,12 @@ class FourthCrop(object):
             PIL Image: Cropped image.
         """
         t, h, w, c = imgs.shape
-        # th, tw = self.size
-        th, tw = int(h/2), int(w/2)
+        th, tw = self.size
+        # th, tw = int(h/2), int(w/2)
+        # select_size = max(th, tw)
 
-        return imgs[:, th:, :tw, :]
+        return imgs[:, h-th:, :tw, :]
+        # return imgs[:, h-select_size:, :select_size, :]
 
 
     def __repr__(self):
