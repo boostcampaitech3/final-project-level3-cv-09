@@ -45,6 +45,14 @@ def frame(data, window_length, hop_length):
   return np.lib.stride_tricks.as_strided(data, shape=shape, strides=strides)
 
 
+def resize_frame(data, window_length, hop_length):
+  num_samples = data.shape[0] 
+  num_frames = int(num_samples / 100 * 1.5)
+  shape = (num_frames, window_length) + data.shape[1:]
+  strides = (data.strides[0] * hop_length,) + data.strides
+  return np.lib.stride_tricks.as_strided(data, shape=shape, strides=strides)
+
+
 def periodic_hann(window_length):
   """Calculate a "periodic" Hann window.
 
@@ -190,7 +198,7 @@ def spectrogram_to_mel_matrix(num_mel_bins=20,
 
 
 def log_mel_spectrogram(data,
-                        audio_sample_rate=8000,
+                        audio_sample_rate=16000,
                         log_offset=0.0,
                         window_length_secs=0.025,
                         hop_length_secs=0.010,
