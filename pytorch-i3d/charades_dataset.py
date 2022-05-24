@@ -34,9 +34,10 @@ def load_rgb_frames(image_dir, vid, start, num):
         d = 226.-min(w,h)
         sc = 1+d/min(w,h)
         img = cv2.resize(img,dsize=(0,0),fx=sc,fy=sc)
-    if w > 448 or h > 448:
-        d = max(w,h)-448
-        sc = 1-d/max(w,h)
+    # 가로 길이가 640보다 크면 비율에 맞게 크기를 줄임
+    if w > 640:
+        d = w/640
+        sc = 1/d
         img = cv2.resize(img,dsize=(0,0),fx=sc,fy=sc)
     img = (img/255.)*2 - 1
     frames.append(img)
