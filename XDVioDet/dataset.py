@@ -1,7 +1,9 @@
 import torch.utils.data as data
 import numpy as np
 
-from utils import process_feat
+# 22.05.25 edit
+# from utils import process_feat
+from XDVioDet.utils import process_feat
 
 class Dataset(data.Dataset):
     def __init__(self, args, transform=None, test_mode=False):

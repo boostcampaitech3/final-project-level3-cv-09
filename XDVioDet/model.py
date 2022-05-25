@@ -3,7 +3,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as torch_init
-from layers import GraphConvolution, SimilarityAdj, DistanceAdj
+
+# 22.05.25 edit
+# from layers import GraphConvolution, SimilarityAdj, DistanceAdj
+from XDVioDet.layers import GraphConvolution, SimilarityAdj, DistanceAdj
 
 
 def weight_init(m):
