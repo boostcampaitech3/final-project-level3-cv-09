@@ -28,12 +28,16 @@ def video_to_tensor(pic):
 
 def load_rgb_frames(image_dir, vid, start, num):
   frames = []
-  for i in range(start, start+num):
-    img = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(6)+'.jpg'))[:, :, [2, 1, 0]]
+  for i in range(start, start+num):    
+    img = cv2.imread(os.path.join(image_dir, 'images', vid, vid+'-'+str(i).zfill(6)+'.jpg'))[:, :, [2, 1, 0]]
     w,h,c = img.shape
     if w < 226 or h < 226:
         d = 226.-min(w,h)
         sc = 1+d/min(w,h)
+        img = cv2.resize(img,dsize=(0,0),fx=sc,fy=sc)
+    if w > 640:
+        d = w/640
+        sc = 1/d
         img = cv2.resize(img,dsize=(0,0),fx=sc,fy=sc)
     img = (img/255.)*2 - 1
     frames.append(img)
@@ -93,13 +97,13 @@ def get_duration(video_start, video_end):
     dif_sec = int(video_end.split('-')[2]) - int(video_start.split('-')[2])
     return dif_hour*3600 + dif_min*60 + dif_sec
 
-def make_video_level_dataset(split_file, split, root, mode, num_classes=157):
+def make_video_level_dataset(root, num_classes=157):
     # split_file = split
     # split='testing'
 
     dataset = []
 
-    files = glob.glob(root+'/*.mp4')
+    files = glob.glob(root+"/videos"+'/*.mp4')
     # print(files)
     for file_path in files:
         file_name = file_path.split('/')[-1]
@@ -121,18 +125,17 @@ def make_video_level_dataset(split_file, split, root, mode, num_classes=157):
         elif violence_flag[0][0] == 'A': # 비폭력 영상
             for fr in range(0,num_frames):
                 label[fr] = 0
-        dataset.append((file_name, label, duration, num_frames))
+        dataset.append((file_name[:-4], label, duration, num_frames))
 
     return dataset
 
 class Charades(data_utl.Dataset):
 
-    def __init__(self, split_file, split, root, mode, transforms=None, save_dir='', num=0):
+    def __init__(self, root, mode, transforms=None, save_dir='', num=0):
         
         # video-level로 dataset 불러올 때 주석 해제
-        # self.data = make_video_level_dataset(split_file, split, root, mode)
-        self.data = make_dataset(split_file, split, root, mode)
-        self.split_file = split_file
+        self.data = make_video_level_dataset(root)
+        # self.data = make_dataset(split_file, split, root, mode)
         self.transforms = transforms
         self.mode = mode
         self.root = root
