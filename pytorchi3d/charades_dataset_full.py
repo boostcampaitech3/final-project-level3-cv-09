@@ -110,7 +110,7 @@ def make_video_level_dataset(root, num_classes=157):
         video_name = file_name.split('_')[0]
         video_start = file_name.split('_')[1]
         video_end = file_name.split('_')[2]
-        violence_flag = file_name.split('_')[-1][0]
+        violence_flag = file_name.split('_')[4:]
 
         cap = cv2.VideoCapture(file_path)
         num_frames = int(cap.get(7))
@@ -119,10 +119,10 @@ def make_video_level_dataset(root, num_classes=157):
         # duration = get_duration(video_start, video_end)
 
         label = np.zeros((num_frames), np.float32)
-        if violence_flag == 'B': # 폭력 영상
+        if violence_flag[0][0] == 'B': # 폭력 영상
             for fr in range(0,num_frames):
                 label[fr] = 1
-        elif violence_flag == 'A': # 비폭력 영상
+        elif violence_flag[0][0] == 'A': # 비폭력 영상
             for fr in range(0,num_frames):
                 label[fr] = 0
         dataset.append((file_name[:-4], label, duration, num_frames))
