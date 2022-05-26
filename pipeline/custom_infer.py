@@ -14,10 +14,11 @@ import XDVioDet.option as option
 
 
 class ViolenceDetector():
-    def __init__(self, image_list_path, audio_list_path, pretrained_model_path):
+    def __init__(self, image_list_path, audio_list_path, pretrained_model_path, save_path):
         self.image_list_path = image_list_path
         self.audio_list_path = audio_list_path
         self.pretrained_model_path = pretrained_model_path
+        self.save_path = save_path
 
     def violence_detection(self):
         args = option.parser.parse_args()
@@ -37,8 +38,8 @@ class ViolenceDetector():
         print('Time:{}'.format(time.time()-st))
         print("[info] Violence Detection Finish")
         # inference 결과 저장
-        np.save('off.npy', off)
-        np.save('on.npy', on)
+        np.save(self.save_path+'/off.npy', off)
+        np.save(self.save_path+'/on.npy', on)
         
         new_index = []
         for i in index:
@@ -53,7 +54,7 @@ class ViolenceDetector():
                 real_index.append(mp4)
         real_index = '\n'.join(real_index)
 
-        file = open('output_index.list', 'w')
+        file = open(self.save_path+'/output_index.list', 'w')
         file.write(real_index)
         file.close()
 
