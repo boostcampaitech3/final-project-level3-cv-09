@@ -3,11 +3,10 @@ import cv2
 from utils import createDirectory, make_feature_list
 from video2image import make_image_from_video
 from audio2wav import make_wav_from_audio
-from score2csv import make_csv_from_score
+from score2figure import make_figure_from_score
 from image_feature_extract import ImageFeatureExtractor
 from audio_feature_extract import AudioFeatureExtractor
 from custom_infer import ViolenceDetector
-from show_result import save_figure
 
 XDVioDet_path = '/opt/ml/input/code/project/XDVioDet'
 pytorchi3d_path = '/opt/ml/input/code/project/pytorchi3d'
@@ -58,18 +57,15 @@ print("[info] Start Violence Detection...")
 # Violence Detection object
 Detector = ViolenceDetector(image_list_path=image_list_path,
                             audio_list_path=audio_list_path,
-                            pretrained_model_path=XDVioDet_path+'/ckpt/wsanodet_mix2.pkl')
+                            pretrained_model_path=XDVioDet_path+'/ckpt/wsanodet_mix2.pkl',
+                            save_path=XDVioDet_path)
 # violence detect
 Detector.violence_detection()
 
 # score(npy) -> result.csv
-make_csv_from_score(off_path=XDVioDet_path+'/off.npy',
-                    on_path=XDVioDet_path+'/on.npy',
-                    index_path=XDVioDet_path+'/output_index.list',
-                    save_path=XDVioDet_path+'/result.csv')
+make_figure_from_score(off_path=XDVioDet_path+'/off.npy',
+                        on_path=XDVioDet_path+'/on.npy',
+                        index_path=XDVioDet_path+'/output_index.list',
+                        save_path=XDVioDet_path)
 
-# result.csv -> score_figure.png
-save_figure(result_csv_path=XDVioDet_path+'/result.csv',
-            save_path=XDVioDet_path+'/score_output.png')
-
-print(f"[info] Save Score Figure")
+print(f"[info] Finish Pipeline")
