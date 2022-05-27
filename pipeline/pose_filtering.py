@@ -81,7 +81,7 @@ def make_blur(frame, keypoints, confidence_threshold):
                     blur_img = cv2.resize(blur_img, dsize=(2*offset, 2*offset), interpolation=cv2.INTER_NEAREST)
 
                     frame[ky-offset:ky+offset, kx-offset:kx+offset] = blur_img
-                    cv2.circle(frame, (int(kx), int(ky)), 6, (0,255,0), -1)
+                    # cv2.circle(frame, (int(kx), int(ky)), 6, (0,255,0), -1)
 
 
 def draw_keypoints(frame, keypoints, confidence_threshold):
