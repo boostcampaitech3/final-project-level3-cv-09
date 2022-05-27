@@ -1,0 +1,14 @@
+streamlit==1.7.0
+hydralit==1.0.12
+opencv-python==4.5.5.64
+matplotlib==3.5.1
+torch==1.7.1
+torchvision==0.8.2
+torchaudio==0.7.2
+h5py==3.1.0
+resampy==0.2.2
+SoundFile==0.10.3.post1
+scikit-learn==1.1.0
+click==8.0.4
+tensorflow==2.9.1
+tensorflow-hub==0.12.0
