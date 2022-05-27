@@ -81,7 +81,7 @@ class ImageFeatureExtractor():
                 
         # Iterate over data.
         saved_list = []
-        for phase in ['0', '1', '2', '3', '4']:
+        for phase in ['0', '1', '2', '3', '4']: # 병렬화 하여 속도 개선
             print(f'Data Loading - {phase}')
             for data in dataloaders[phase]:
                 # get the inputs
