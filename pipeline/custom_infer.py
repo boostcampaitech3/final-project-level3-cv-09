@@ -54,7 +54,7 @@ class ViolenceDetector():
                 real_index.append(mp4)
         real_index = '\n'.join(real_index)
 
-        file = open(self.save_path+'/output_index.list', 'w')
+        file = open('data/list/output_index.list', 'w')
         file.write(real_index)
         file.close()
 

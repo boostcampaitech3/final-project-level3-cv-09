@@ -17,11 +17,11 @@ from pytorchi3d.pytorch_i3d import InceptionI3d
 from pytorchi3d.charades_dataset_full import Charades as Dataset
 
 class ImageFeatureExtractor():
-    def __init__(self, root = '/opt/ml/input/data/',
+    def __init__(self, root = 'data/',
                        mode = 'rgb',
                        batch_size = 1,
-                       save_dir = '/opt/ml/input/data/image_features',
-                       load_model = '/opt/ml/input/code/project/pytorchi3d/models/rgb_imagenet.pt'):
+                       save_dir = 'data/image_features',
+                       load_model = '../pytorchi3d/models/rgb_imagenet.pt'):
         self.root = root
         self.mode = mode
         self.batch_size = batch_size

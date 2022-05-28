@@ -6,8 +6,8 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from torchvggish.torchvggish import vggish
 
 class AudioFeatureExtractor():
-    def __init__(self, audio_path = '/opt/ml/input/data/audios',
-                       feature_save_path = '/opt/ml/input/data/audio_features'):
+    def __init__(self, audio_path = 'data/audios',
+                       feature_save_path = 'data/audio_features'):
         self.audio_path = audio_path
         self.feature_save_path = feature_save_path
 
