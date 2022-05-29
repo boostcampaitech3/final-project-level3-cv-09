@@ -108,7 +108,7 @@ def test():
         st.video(os.path.join(save_video_path, 'encoding_video.mp4'))
     
     # 데이터를 초기화 하는 버튼        
-    # if st.button("Reset All Data"):
-    #     reset_data()
+    if st.button("Reset All Data"):
+        reset_data()
 
 app.run()
