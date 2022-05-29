@@ -38,6 +38,8 @@ class ViolenceDetector():
         print('Time:{}'.format(time.time()-st))
         print("[info] Violence Detection Finish")
         # inference 결과 저장
+        if not os.path.isdir(self.save_path):
+            os.mkdir(self.save_path)
         np.save(self.save_path+'/off.npy', off)
         np.save(self.save_path+'/on.npy', on)
         
