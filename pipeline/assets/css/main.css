@@ -17,8 +17,10 @@
 	src: url("fonts/NanumSquare_acR.ttf") format("truetype");
   } 
 
-
-.main_tit01{text-align:left;color:#0c254b;font-family:Nan; font-size:48px; line-height: 68px;}
+.f_names{ padding-top: 20px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500; }
+.main0{	font-family: 'Noto Sans KR', sans-serif; font-weight: 500; }
+.main_tit01{text-align:left;color:#0c254b;	font-family: 'Noto Sans KR', sans-serif;
+	font-size:48px; line-height: 60px; font-weight: 700;}
 .item2 {width: 200px; height: 200px; margin: 50px auto; padding-top: 75px; background: rgba(255,85,0, .7); text-align: center; color: #4E4C48; font-size: 1.5em;}
   .thema_items{border-radius: 1.3889vw; box-shadow: 0 0.3472vw 1.0417vw 0 rgb(12 37 75 / 15%);}
   .maintxt{	 font-size: 20px; text-align: left; margin-top :30px;}
@@ -29,29 +31,70 @@
     border-radius: 1.3889vw;
 	}
 	.txt_box{padding:58px 49px 77px 39px}
-	.txt_box span{font-size: 72px; font-weight: 600;
+	.txt_box span{font-family: 'Noto Sans KR', sans-serif; font-weight: 700;font-size: 60px;
 		line-height: 76px; color:#1c4ab4; }
 	.g_txt01{color:#406eff}
 	.g_txt02{font-weight: 700; font-size: 19px; line-height: 30px;}
 	.g_txt03{line-height: 30px;}
 
-	.skill_txt01{letter-spacing: -1px; font-family:Nan; font-size:30px; line-height: 68px; letter-spacing: -0.18px;}
+	.skill_txt01{letter-spacing: -1px;font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size:30px; line-height: 68px; letter-spacing: -0.18px;}
 	
 	.skill_txt02{ font-family: "Nan2"; font-size: 20px;  line-height: 10px;}	
 
 	.items{text-align: center; margin-top: 60px;}
-	.item{width: 440px; height: 520px; margin-right: 60px;background-image: url(../../images/bg_face_tab02_03_01.png); overflow: hidden; display:inline-block; position: relative;}
+	.item{width: 440px; height: 520px; margin-right: 60px;
+		background-image: url(https://user-images.githubusercontent.com/82289435/170862337-693008f3-59f1-4ef7-af5d-4c6bc9029d70.png); overflow: hidden; display:inline-block; position: relative;}
 	
-	.item_txt{font-family: "Nan2"; font-weight:500;font-size:24px;color:#fff;position: absolute; left:0; padding: 0 60px; bottom: 0;}
-	.caption {opacity: 0; transition:all 0.5s; box-sizing:border-box; position:absolute; top:0; left:0; padding:60px ; color: #fff; text-align: left; 
-	 width: 100%; height:100%; background-color: #0c254b;border-radius: 10px; }
+	.item2{width: 440px; height: 520px; margin-right: 60px;
+		background-image: url(https://user-images.githubusercontent.com/82289435/170862335-64c94270-00b6-4ffd-9e87-c12ac955d921.png); overflow: hidden; display:inline-block; position: relative;}
 	
-	.caption p{ font-family: "Nan"; font-size: 25px;}
-	.caption span{ font-family: "Nan2"; font-size: 18px; line-height: 28px;}
+	.txt00:after{
+		content: '';
+		position: absolute;
+		top: 71px;
+   		left: 575px;
+		width: 40px;
+		height: 40px;
+		background-image: url('https://user-images.githubusercontent.com/82289435/170862708-e35e73eb-6ac8-4f2b-ac09-ec56072d7322.png');
+
+		background-repeat: no-repeat;
+	}
+	.txt001:after{
+		content: '';
+		position: absolute;
+		top: 75px;
+   		left: 92px;
+		width: 39px;
+		height: 39px;
+		background-image: url('https://user-images.githubusercontent.com/82289435/170861391-696b425e-d181-4c5a-950c-005a80404315.png');
+
+		background-repeat: no-repeat;
+	}
+	
+	.txt002:after{
+		content: '';
+		position: absolute;
+		top: 84px;
+		left: 1070px;
+		width: 39px;
+		height: 39px;
+		background-image: url('https://user-images.githubusercontent.com/82289435/170862773-6c44bcd0-cd0d-44a4-8b03-6c65b5be0397.png');
+
+		background-repeat: no-repeat;
+	}
+
+	.item_txt{font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size:24px;color:#fff;position: absolute; left:0; padding: 0 60px; bottom: 0;}
+	.caption {font-family: 'Noto Sans KR', sans-serif; font-weight: 500; opacity: 0; transition:all 0.5s; box-sizing:border-box; position:absolute; top:0; left:0; padding:60px ; color: #fff; text-align: left; 
+	 width: 100%; height:100%; background-color: #0c254b;border-radius: 63px; }
+	
+	.caption p{ font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size: 25px;}
+	.caption span{font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size: 18px; line-height: 28px;}
 
 	.item:hover .caption{ opacity:0.8; top:100; }
 	.item:hover .item_txt{ opacity:0;}
 	
+	.item2:hover .caption{ opacity:0.8; top:100; }
+	.item2:hover .item_txt{ opacity:0;}
 		/* pkh end  */
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
@@ -186,7 +229,6 @@ input, select, textarea {
 		transition: color 0.25s ease-in-out, border-color 0.25s ease-in-out, background-color 0.25s ease-in-out;
 		color: inherit;
 		text-decoration: none;
-		border-bottom: dotted 1px #62676c;
 	}
 
 		a:hover {
@@ -2138,21 +2180,16 @@ input, select, textarea {
 
 	#header-wrapper {
 		position: relative;
-		padding: 4em 0 2em 0;
-		/* background-image: url("images/header.svg");
-		background-image: url("images/overlay.png"), url("images/header.svg"), -moz-linear-gradient(75deg, #FF7088 15%, #F2B69D 55%);
-		background-image: url("images/overlay.png"), url("images/header.svg"), -webkit-linear-gradient(75deg, #FF7088 15%, #F2B69D 55%);
-		background-image: url("images/overlay.png"), url("images/header.svg"), -ms-linear-gradient(75deg, #FF7088 15%, #F2B69D 55%); */
-		/* background-image: url("images/overlay.png"), url("images/header.svg"), linear-gradient(75deg, #FF7088 15%, #F2B69D 55%); */
-		background-color: #f08c89;
-		background-size: 100% 620%;
-		background-size: 128px 128px, 100% 620%, auto;
-		background-repeat: repeat, no-repeat, no-repeat;
-	}
+		width: 100%;
+		height: auto;
 
+		background-image: url('https://user-images.githubusercontent.com/82289435/170857913-f11d5312-5ed2-45eb-be80-c76893e33b5f.png');
+		background-size: cover;
+
+	}
 	.homepage #header-wrapper {
 		padding: 13em 0 11em 0;
-		background-size: 128px 128px, 100% 100%, auto;
+		/* background-size: 128px 128px, 100% 100%, auto; */
 	}
 
 	#promo-wrapper {
@@ -2179,27 +2216,21 @@ input, select, textarea {
 	#logo {
 		position: absolute;
 		z-index: 1;
-		top: 0;
-		left: 50%;
+		top: 42px;
+    	left: 0%;
 		width: 15em;
-		margin-left: -7.5em;
+	
 	}
 
 		#logo a {
 			display: block;
 			width: 100%;
-			height: 4em;
-			line-height: 4em;
-			background: rgba(255, 255, 255, 0.15);
-			border: solid 1px;
-			border-color: #fff;
-			border-color: rgba(255, 255, 255, 0.75);
-			border-top: 0;
-			border-radius: 0 0 0.35em 0.35em;
-			color: #fff;
+			color: rgb(255, 4, 4);
+			font-family: 'Noto Sans KR', sans-serif;
+			font-size: 48px;
 			display: inline-block;
-			font-weight: 600;
-			letter-spacing: 3px;
+			font-weight: 700;
+			letter-spacing: -5px;
 			text-align: center;
 			text-transform: uppercase;
 		}
@@ -2345,10 +2376,11 @@ input, select, textarea {
 		}
 
 		#hero .button {
-			background: #fff;
+			background: #db0510;
 			border-color: rgba(255, 255, 255, 0);
-			color: #f08c89;
-			font-size: 1.25em;
+			color: #ffffff;
+			font-family: 'Noto Sans KR', sans-serif;
+			font-size: 2em;
 		}
 
 			#hero .button:hover {

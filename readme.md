@@ -10,6 +10,9 @@ conda activate {your_env_name}
 - install requirements
 ```
 pip install -r requirements.txt
+apt-get install libsndfile1
+apt-get update
+apt-get install ffmpeg
 ```
 - Run Demo 
 (🧨Caution) pipeline is working directory. All path setting on pipeline.

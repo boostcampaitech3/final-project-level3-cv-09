@@ -16,6 +16,10 @@ reset_target_list = [
     'data/output_videos',
     # videos
     'data/videos',
+    # graph
+    'data/figures',
+    # prediction
+    'data/npys'
 ]
 
 def reset_dir(dir_path):
