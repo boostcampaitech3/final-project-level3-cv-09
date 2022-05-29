@@ -136,6 +136,9 @@ def test():
     # 데이터를 초기화 하는 버튼        
     if st.button("Reset All Data"):
         reset_data()
+<<<<<<< HEAD
+>>>>>>> 0b36b69e5945be8aa56f1ec5ef3c7820b4cb28a2
+=======
 >>>>>>> 0b36b69e5945be8aa56f1ec5ef3c7820b4cb28a2
 
 app.run()
