@@ -8,9 +8,7 @@ def make_image_from_video(video_root_path, image_root_path):
 
     for file_path, save_path in zip(video_list, image_list):
         createDirectory(save_path[:-4])
-
-        start = file_path.find('/', file_path.find('/', file_path.find('/', file_path.find('/', file_path.find('/', file_path.find('/') + 1)+1)+1)+1)+1)
-
+        start = file_path.find('/', file_path.find('/') + 1)
         video_name = file_path[start+1:-4]
         print('convert mp4 to jpg :', video_name)
 

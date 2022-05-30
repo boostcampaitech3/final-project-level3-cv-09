@@ -10,14 +10,21 @@ conda activate {your_env_name}
 - install requirements
 ```
 pip install -r requirements.txt
+apt-get install libsndfile1
+apt-get update
+apt-get install ffmpeg
 ```
-- Run Demo
+- Run Demo 
+(🧨Caution) pipeline is working directory. All path setting on pipeline.
 ```
-streamlit run pipeline/zzolflix.py
+cd pipeline
+```
+```
+streamlit run zzolflix.py
 ```
 - Run Demo on Cloud Server
 ```
-streamlit run pipeline/zzolflix.py --server.port {your_server_port}
+streamlit run zzolflix.py --server.port {your_server_port}
 ```
 
 ### Data Directory Structure

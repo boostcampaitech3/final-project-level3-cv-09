@@ -146,6 +146,3 @@ def pose_blur(target_image_path):
         
         cv2.imwrite(img_path, frame)
     print('Finish Pose Blur')
-        
-
-# pose_blur('/opt/ml/input/data/images/Bad.Boys.1995__#01-33-51_01-34-37_label_B2-0-0')
