@@ -17,3 +17,39 @@ where we oversample each video frame with the “5-crop” augment, “5-crop”
   &nbsp; &nbsp; &nbsp;  *the model is in the ckpt folder.*
 
 Thanks for your attention!
+
+## File Tree
+📦XDVioDet  
+ ┣ 📂ckpt  
+ ┃ ┣ 📜.DS_Store  
+ ┃ ┗ 📜wsanodet_mix2.pkl  
+ ┣ 📂list  
+ ┃ ┣ 📜.DS_Store  
+ ┃ ┣ 📜audio.list  
+ ┃ ┣ 📜audio_test.list  
+ ┃ ┣ 📜flow.list  
+ ┃ ┣ 📜flow_test.list  
+ ┃ ┣ 📜gt.npy  
+ ┃ ┣ 📜gt.txt  
+ ┃ ┣ 📜make_gt.py  
+ ┃ ┣ 📜make_list.py  
+ ┃ ┣ 📜media2xx.ipynb  
+ ┃ ┣ 📜rgb.list  
+ ┃ ┣ 📜rgb_test.list  
+ ┃ ┣ 📜xx_audio_test.list  
+ ┃ ┗ 📜xx_rgb_test.list  
+ ┣ 📜.DS_Store  
+ ┣ 📜README.md  
+ ┣ 📜dataset.py  
+ ┣ 📜infer.py  
+ ┣ 📜layers.py  
+ ┣ 📜main.py  
+ ┣ 📜model.py  
+ ┣ 📜off.npy  
+ ┣ 📜on.npy  
+ ┣ 📜option.py  
+ ┣ 📜output.ipynb  
+ ┣ 📜test.py  
+ ┣ 📜train.py  
+ ┣ 📜tree.txt  
+ ┗ 📜utils.py  

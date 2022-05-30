@@ -1,7 +1,9 @@
 import torch.utils.data as data
 import numpy as np
 
-from utils import process_feat
+# 22.05.25 edit
+# from utils import process_feat
+from XDVioDet.utils import process_feat
 
 class Dataset(data.Dataset):
     def __init__(self, args, transform=None, test_mode=False):
@@ -90,7 +92,7 @@ class Dataset(data.Dataset):
         if self.tranform is not None:
             features = self.tranform(features)
         if self.test_mode:
-            return features
+            return features, self.list[index].strip('\n')   # 파일명 return하도록 수정
 
         else:
             features = process_feat(features, self.max_seqlen, is_random=False)
