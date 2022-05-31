@@ -14,7 +14,7 @@ def convert_mp4_to_avi(file_name, output_directory):
     input_name = file_name
     output_name = ntpath.basename(file_name)
     output = os.path.join(output_directory, output_name.replace('.mp4', '.wav', 1))
-    cmd = "ffmpeg -y -i {} -ab 160K -ac 1 -ar 16000 -vn {}".format(input_name, output) 
+    cmd = "ffmpeg -hide_banner -loglevel error -y -i {} -ab 160K -ac 1 -ar 16000 -vn {}".format(input_name, output) 
     return os.popen(cmd)
 
 def make_wav_from_audio(input_directory, output_directory):

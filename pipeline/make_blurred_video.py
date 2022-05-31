@@ -11,9 +11,9 @@ def encoding_video(images_path, audios_path, save_video_path):
 
     if len(os.listdir(images_path)) == 1 and len(os.listdir(audios_path)) == 1:
         # jpg to mp4
-        os.system(f"ffmpeg -y -framerate 1 -f image2 -r 24 -i {image_target_path}/{video_name}-%06d.jpg -vcodec libx264 -b 800k -y {save_blurred_video_path}")
+        os.system(f"ffmpeg -hide_banner -loglevel error -y -framerate 1 -f image2 -r 24 -i {image_target_path}/{video_name}-%06d.jpg -vcodec libx264 -b 800k -y {save_blurred_video_path}")
         
-        os.system(f"ffmpeg -y -i {save_blurred_video_path} -i {audio_target_path} -c:v copy -c:a aac {save_encoding_video_path}")
+        os.system(f"ffmpeg -hide_banner -loglevel error -y -i {save_blurred_video_path} -i {audio_target_path} -c:v copy -c:a aac {save_encoding_video_path}")
     else:
         if len(os.listdir(images_path)) == 0: raise "NoneOfVideoError"
         elif len(os.listdir(audios_path)) == 0: raise "NoneOfAudioError"
