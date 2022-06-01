@@ -1,23 +1,24 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 def make_figure_from_score(off_path, on_path, index_path, save_path):
     off = np.load(off_path)
     on = np.load(on_path)
     index = list(open(index_path))
-
     off = np.repeat(off, 16)
     on = np.repeat(on, 16)
-
     video = []
     for i in index:
         video.append(i.rstrip())
-
     data = {'video':video, 'off':off, 'on':on}
     df = pd.DataFrame(data)
 
     grouped = df.groupby('video')
+
+    if not os.path.isdir(save_path):
+        os.mkdir(save_path)
 
     count=1
     for vid, score in grouped:
