@@ -1,4 +1,3 @@
-# example.py
-- ```example1.py```: matplotlib.animation, PyQT5
-- ```example2.py```: matplotlib.animation
-- ```example3.py```: matplotlib.animation, Tkinter
+# animated_graph.py
+
+- 비디오와 score 그래프 같이 plot
