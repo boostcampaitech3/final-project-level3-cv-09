@@ -153,7 +153,6 @@ class Charades(data_utl.Dataset):
         self.mode = mode
         self.root = root
         self.save_dir = save_dir
-        print("test")
 
     def __getitem__(self, index):
         """

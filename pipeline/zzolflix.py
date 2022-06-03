@@ -105,7 +105,7 @@ def test():
 
             image = Image.open('data/figures/score_output_1.png')
 
-            st.video(os.path.join(FILE_OUTPUT, os.listdir(FILE_OUTPUT)[0]))
+            st.video(os.path.join('data/output_videos', 'encoding_video.mp4'))
 
             st.image(image, caption="Score_Output")
 
