@@ -126,9 +126,9 @@ def make_video_level_dataset(root, num_classes=157):
         violence_flag = violence_flag.split(".")[0]
 
         cap = cv2.VideoCapture(file_path)
-        num_frames = int(cap.get(7))
         fps = int(cap.get(5))
-        duration = int(num_frames / fps)
+        num_frames = int(cap.get(7)/(fps/24))
+        duration = int(num_frames / 24)
         # duration = get_duration(video_start, video_end)
 
         label = np.zeros((num_frames), np.float32)
