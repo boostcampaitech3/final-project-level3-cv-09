@@ -19,7 +19,9 @@ reset_target_list = [
     # graph
     'data/figures',
     # prediction
-    'data/npys'
+    'data/npys',
+    # skip
+    'data/not_violent_images'
 ]
 
 def reset_dir(dir_path):
