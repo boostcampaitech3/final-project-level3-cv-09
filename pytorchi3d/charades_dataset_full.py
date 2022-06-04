@@ -109,7 +109,7 @@ def get_duration(video_start, video_end):
     return dif_hour * 3600 + dif_min * 60 + dif_sec
 
 
-def make_video_level_dataset(root, num_classes=157):
+def make_video_level_dataset(root, isTrain, num_classes=157):
     # split_file = split
     # split='testing'
 
@@ -119,41 +119,39 @@ def make_video_level_dataset(root, num_classes=157):
     # print(files)
     for file_path in files:
         file_name = file_path.split("/")[-1]
-        video_name = file_name.split("_")[0]
-        video_start = file_name.split("_")[1]
-        video_end = file_name.split("_")[2]
-        violence_flag = file_name.split("label_")[-1]
-        violence_flag = violence_flag.split(".")[0]
+        if isTrain:
+            violence_flag = file_name.split("label_")[-1]
+            violence_flag = violence_flag.split(".")[0]
 
         cap = cv2.VideoCapture(file_path)
-        num_frames = int(cap.get(7))
-        fps = int(cap.get(5))
-        duration = int(num_frames / fps)
+        fps = cap.get(5)
+        num_frames = int(cap.get(7) / fps * 24)
+        duration = num_frames / 24
         # duration = get_duration(video_start, video_end)
 
         label = np.zeros((num_frames), np.float32)
-        if violence_flag[0] == "B":  # 폭력 영상
-            for fr in range(0, num_frames):
-                label[fr] = 1
-        elif violence_flag[0] == "A":  # 비폭력 영상
-            for fr in range(0, num_frames):
-                label[fr] = 0
+        if isTrain:
+            if violence_flag[0] == "B":  # 폭력 영상
+                for fr in range(0, num_frames):
+                    label[fr] = 1
+            elif violence_flag[0] == "A":  # 비폭력 영상
+                for fr in range(0, num_frames):
+                    label[fr] = 0
         dataset.append((file_name[:-4], label, duration, num_frames))
 
     return dataset
 
 
 class Charades(data_utl.Dataset):
-    def __init__(self, root, mode, transforms=None, save_dir="", num=0):
+    def __init__(self, root, mode, isTrain, transforms=None, save_dir="", num=0):
 
         # video-level로 dataset 불러올 때 주석 해제
-        self.data = make_video_level_dataset(root)
+        self.data = make_video_level_dataset(root, isTrain)
         # self.data = make_dataset(split_file, split, root, mode)
         self.transforms = transforms
         self.mode = mode
         self.root = root
         self.save_dir = save_dir
-        print("test")
 
     def __getitem__(self, index):
         """
