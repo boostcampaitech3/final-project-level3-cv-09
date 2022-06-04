@@ -7,12 +7,13 @@ import hydralit_components as hc
 import os
 from PIL import Image
 
-from reset import reset_data, setting_directory
+from reset import reset_data, reset_dir
 
 from viodet_video import violence_detection
 
 from pose_filtering import pose_blur
 from make_blurred_video import encoding_video
+from skip import skip
 
 app = hy.HydraApp(
   title='ZZOLFLIX',
@@ -98,6 +99,8 @@ def test():
             with open(os.path.join(FILE_OUTPUT, uploaded_file.name), "wb") as out_file:  # open for [w]riting as [b]inary
                 out_file.write(uploaded_file.read())
 
+        threshold = st.slider("Threshold", min_value=0.00, max_value=1.0, step=0.01, value=0.8)
+
         # Violence Detection
         if st.button("Violence Detection"):
             with hc.HyLoader('Violence Detection... Please Wait...', hc.Loaders.standard_loaders,index=5):
@@ -105,7 +108,7 @@ def test():
 
             image = Image.open('data/figures/score_output_1.png')
 
-            st.video(os.path.join('data/output_videos', 'encoding_video.mp4'))
+            st.video(os.path.join(save_video_path, 'compatible_video.mp4'))
 
             st.image(image, caption="Score_Output")
 
@@ -121,10 +124,16 @@ def test():
                                 save_video_path)
 
             st.video(os.path.join(save_video_path, 'encoding_video.mp4'))
-        
+
+        # 영상 스킵
+        if st.button("Skip Violent Scene"):
+            with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                skip(threshold)
+
         # 데이터를 초기화 하는 버튼        
         if st.button("Reset All Data"):
             reset_data()
+
 
     with col3:
         pass

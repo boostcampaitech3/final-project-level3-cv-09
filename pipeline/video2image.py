@@ -8,7 +8,7 @@ def make_image_from_video(video_root_path, image_root_path):
 
     print('convert codec')
     for file_path in video_list:
-        os.system(f"ffmpeg -hide_banner -loglevel error -y -i {file_path} -map 0 -c:v libx264 -c:a copy {os.path.join('data/output_videos', 'encoding_video.mp4')}")
+        os.system(f"ffmpeg -hide_banner -loglevel error -y -i {file_path} -map 0 -c:v libx264 -c:a copy {os.path.join('data/output_videos', 'compatible_video.mp4')}")
 
     for file_path, save_path in zip(video_list, image_list):
         createDirectory(save_path[:-4])
