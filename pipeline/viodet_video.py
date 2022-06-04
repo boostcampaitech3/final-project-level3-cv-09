@@ -30,7 +30,7 @@ def violence_detection():
                                 save_dir = 'data/image_features',
                                 load_model = 'models/rgb_imagenet.pt')
 
-    print("[info] image featrue extracting...")
+    print("[info] image features extracting...")
     # jpg -> image feature(npy)
     IFE.extract_image_features()
 
@@ -38,7 +38,7 @@ def violence_detection():
     AFE = AudioFeatureExtractor(audio_path = 'data/audios',
                                 feature_save_path = 'data/audio_features')
 
-    print("[info] audio featrue extracting...")
+    print("[info] audio features extracting...")
     # wav -> audio feature(npy)
     AFE.extract_audio_features()
 
