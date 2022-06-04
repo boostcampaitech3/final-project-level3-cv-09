@@ -108,7 +108,7 @@ def test():
 
             image = Image.open('data/figures/score_output_1.png')
 
-            st.video(os.path.join('data/output_videos', 'encoding_video.mp4'))
+            st.video(os.path.join(save_video_path, 'compatible_video.mp4'))
 
             st.image(image, caption="Score_Output")
 
@@ -127,12 +127,8 @@ def test():
 
         # 영상 스킵
         if st.button("Skip Violent Scene"):
-            
-            reset_dir('data/not_violent_images')
-
-            origin_image_path = os.path.join(images_path, os.listdir(images_path)[0])
             with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                skip(origin_image_path, threshold)
+                skip(threshold)
 
         # 데이터를 초기화 하는 버튼        
         if st.button("Reset All Data"):

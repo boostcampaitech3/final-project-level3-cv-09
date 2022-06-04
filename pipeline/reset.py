@@ -21,7 +21,7 @@ reset_target_list = [
     # prediction
     'data/npys',
     # skip
-    'data/not_violent_images'
+    'data/not_violent_videos'
 ]
 
 def reset_dir(dir_path):
