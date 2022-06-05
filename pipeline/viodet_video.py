@@ -18,7 +18,7 @@ output_directory = "data/audios"  # wav가 저장되는 폴더 경로
 createDirectory(output_directory)
 
 
-def violence_detection():
+def violence_detection(threshold):
     # mp4 -> jpg
     make_image_from_video(video_root_path, image_root_path)
     # mp4 -> wav
@@ -75,6 +75,7 @@ def violence_detection():
 
     # score(npy) -> result.csv
     make_figure_from_score(
+        threshold,
         off_path="data/npys/off.npy",
         on_path="data/npys/on.npy",
         index_path="data/list/output_index.list",
