@@ -70,7 +70,17 @@ def test():
                                                 border-radius: 0.25rem;
                                                 backgroud-color: #D81F26;
                                                 height: 3rem;
-                                                width: 30rem; 
+                                                width: 30rem;
+                                                box-sizing: 50%;
+                                                margin: auto;
+                                                font-size:18px;
+                                                display: block;                      
+                                                }
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }              
             </style>
             
             """
@@ -84,11 +94,12 @@ def test():
     audios_path = 'data/audios'
     save_video_path = 'data/output_videos'
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
         pass
     with col2:
-        st.title("Violence Detection")
+        # st.title("Violence Detection")
+
 
         uploaded_file = st.file_uploader("Choose a Video", type=['mp4'])
 
@@ -99,12 +110,12 @@ def test():
             with open(os.path.join(FILE_OUTPUT, uploaded_file.name), "wb") as out_file:  # open for [w]riting as [b]inary
                 out_file.write(uploaded_file.read())
 
-        threshold = st.slider("Threshold", min_value=0.00, max_value=1.0, step=0.01, value=0.8)
+        threshold = st.slider("Set a Threshold", min_value=0.00, max_value=1.0, step=0.05, value=0.8)
 
         # Violence Detection
         if st.button("Violence Detection"):
             with hc.HyLoader('Violence Detection... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                violence_detection()
+                violence_detection(threshold)
 
             image = Image.open('data/figures/score_output_1.png')
 
