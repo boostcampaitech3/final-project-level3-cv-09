@@ -42,9 +42,9 @@ def get_interval(off_path, threshold_value):
     not_violent_scene = sorted(list(set(np.array(not_violent_scene) // 24)))
     print(not_violent_scene)
 
-    if not_violent_scene:
+    save_scene = []
 
-        save_scene = []
+    if not_violent_scene:
 
         queue = deque(not_violent_scene)
 
