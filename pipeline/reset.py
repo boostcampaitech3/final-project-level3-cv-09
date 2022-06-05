@@ -21,7 +21,9 @@ reset_target_list = [
     # prediction
     'data/npys',
     # skip
-    'data/not_violent_videos'
+    'data/not_violent_videos',
+    # blurred_images for violence localization
+    'data/blurred_images',
 ]
 
 def reset_dir(dir_path):
