@@ -9,9 +9,12 @@ from PIL import Image
 
 from reset import reset_data, reset_dir
 
+from video2image import make_image_from_video
+
 from viodet_video import violence_detection
 
 from pose_filtering import pose_blur
+from violence_localization import violence_localization
 from make_blurred_video import encoding_video
 from skip import skip
 
@@ -91,6 +94,8 @@ def test():
     # path setting
     xdviodet_path = 'project/XDVioDet'
     images_path = 'data/images'
+    video_path = 'data/videos'
+    blurred_images_path = 'data/blurred_images'
     audios_path = 'data/audios'
     save_video_path = 'data/output_videos'
 
@@ -127,10 +132,12 @@ def test():
         if st.button("Violence Filtering"):
             blur_target_images_path = os.path.join(images_path, os.listdir(images_path)[0])
             with hc.HyLoader('Violence Filtering... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                pose_blur(blur_target_images_path)
+                # pose_blur(blur_target_images_path)
+                make_image_from_video(video_path, blurred_images_path)
+                violence_localization(threshold)
 
             with hc.HyLoader('Save Video... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                encoding_video(images_path,
+                encoding_video(blurred_images_path,
                                 audios_path,
                                 save_video_path)
 
