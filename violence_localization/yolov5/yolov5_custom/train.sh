@@ -13,9 +13,9 @@ hyp="hyp.p6.yaml" #(default=ROOT / 'data/hyps/hyp.scratch.yaml')
 epochs="300" #(default=300)
 batch_size="16" #(default=16)
 img_size="640" #(default=640)
-workers="8" #(default=8)
+workers="4" #(default=8)
 project="../output/yolov5/" # project_dir (default=ROOT / 'runs/train')
-name="freeze10_train" # experiment_name (default='exp')
+name="movie_val20_10" # experiment_name (default='exp')
 freeze="10" # Number of layers to freeze (default=0) backbone 10, all layer excluded final layer 24
 # save_period="10" # Save checkpoint every x epochs (default=-1)
 
