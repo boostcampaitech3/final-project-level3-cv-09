@@ -111,6 +111,30 @@ class Annotator:
                             thickness=tf,
                             lineType=cv2.LINE_AA)
 
+    def mosaic_label(self, box):
+        # Add one xyxy box to image with label
+        # print(box) 609 353 663 392 좌하단 -> 우상단
+        x, y, w, h = int(box[0]), int(box[1]), int(box[2])-int(box[0]), int(box[3])-int(box[1])
+        self.im = self.mosaic_area(x, y, w, h)
+
+    # src = cv2.imread('C:/Users/Administrator/Desktop/python/origin/face.jpg')
+    def mosaic(self, src, ratio=0.1):
+        small = cv2.resize(src, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_NEAREST)
+        return cv2.resize(small, src.shape[:2][::-1], interpolation=cv2.INTER_NEAREST)
+
+    def mosaic_area(self, x, y, width, height, ratio=0.05):
+        dst = self.im.copy()
+        dst[y:y + height, x:x + width] = self.mosaic(dst[y:y + height, x:x + width], ratio)
+        return dst
+    # dst_area = mosaic_area(src, 270, 130, 150, 60)
+    # cv2.imwrite('C:/Users/Administrator/Desktop/python/origin/face_mosaic_area.jpg', dst_area)
+
+    def blur(self, box, ksize = 50):
+        # print(box) 609 353 663 392 좌하단 -> 우상단
+        x1, y1, x2, y2 = int(box[0]), int(box[1]), int(box[2]), int(box[3])
+        blur_img = self.im[y1:y2, x1:x2].copy()
+        self.im[y1:y2, x1:x2] = cv2.blur(blur_img, (ksize,ksize))
+
     def rectangle(self, xy, fill=None, outline=None, width=1):
         # Add rectangle to image (PIL-only)
         self.draw.rectangle(xy, fill, outline, width)
