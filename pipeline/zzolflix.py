@@ -17,6 +17,7 @@ from pose_filtering import pose_blur
 from violence_localization import violence_localization
 from make_blurred_video import encoding_video
 from skip import skip
+from mute import mute
 
 app = hy.HydraApp(
   title='ZZOLFLIX',
@@ -147,6 +148,11 @@ def test():
         if st.button("Skip Violent Scene"):
             with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 skip(threshold)
+
+        # 영상 스킵
+        if st.button("Mute Violent Scene"):
+            with hc.HyLoader('Mute violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                mute(threshold)
 
         # 데이터를 초기화 하는 버튼        
         if st.button("Reset All Data"):
