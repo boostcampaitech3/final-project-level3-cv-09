@@ -26,6 +26,7 @@ $ ./train.sh
 - custom train 된 가중치로 mp4영상 detect 해보기 (output = rendering된 동영상.mp4 sound(X))
 - YouTube, image, webcam, Stream으로도 detect 해볼 수 있습니다.
 - 아래와 같이 pt 파일과 실험해볼 동영상을 지정하여 실행할 수 있습니다.
+- detect.py의 169~171 line에서 원하는 형태로 randering 할수 있습니다. 169:box 그리기, 170:mosaic 그리기, 171:blur 처리
 ```
 python detect.py --weights ../output/yolov5/freeze10_train/weights/best.pt --source NewWorld_BestScenes.mp4
 ```
