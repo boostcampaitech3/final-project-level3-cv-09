@@ -1,4 +1,45 @@
-### Get Started
+![team](https://user-images.githubusercontent.com/82289435/172589237-13de3210-f184-4a99-a23c-7dbb71a5e4ae.png)
+
+### 손바닥도 마주쳐야 소리가 납니다.  
+### 손바닥을 맞대고 싶은 우리는 팀 하이파이프입니다.
+
+![220606_발표자료](https://user-images.githubusercontent.com/82289435/172586979-f5a45e21-058a-4464-ac7b-75957c3dd690.png)
+- 프로젝트 주제
+    - 아동 · 심약자를 위한 동영상 폭력 감지 및 필터링 서비스
+
+- 프로젝트 소개
+    - 동영상 내 폭력적인 장면에 대한 폭력성 스코어링
+    - 폭력성 스코어가 높은 부분, 필터링 적용 
+    - 필터링 적용 후, 처리된 영상 다운로드
+
+<br>
+
+- 서비스 개념도
+    - Multi-Modal을 활용한 Violence Detection(HLNet)
+    - 동영상 전 구간에 대한 Blood Detection(YOLOv5)
+    - 폭력성 구간에 대한 Violence Localization(ResNet34-Kinetics)
+<br>
+
+![concept](https://user-images.githubusercontent.com/82289435/172587234-a5da4483-bc2e-49f8-a03a-a896081b557d.png)
+
+<br>
+
+- 프로그램 구성도
+    - Web Demo : Streamlit
+
+
+![structure](https://user-images.githubusercontent.com/82289435/172592125-89cd43f1-f767-4c52-92d0-d1cd74939586.png)
+
+<br>
+
+### ⚙ Development Environment
+- GPU : Nvidia Tesla V100
+- OS : Linux Ubuntu 18.04
+- Runtime : Python 3.8.5
+
+<br>
+
+### 🎬 Get Started
 - We recommanded PYTHON 3.8.5
 ```
 conda create -n {your_env_name} python=3.8.5
@@ -14,6 +55,9 @@ apt-get install libsndfile1
 apt-get update
 apt-get install ffmpeg
 ```
+
+<br>
+
 - Run Demo 
 (🧨Caution) pipeline is working directory. All path setting on pipeline.
 ```
@@ -30,13 +74,18 @@ streamlit run zzolflix.py --server.port {your_server_port}
 ### Data Directory Structure
 
 ```
-data/
-    |-- videos(mp4)
-    |-- audios(wav)
-    |-- audio_features(wav -> npy)
-    |-- images(jpg)
-    |-- image_features(jpg -> npy)
-    `-- list : *.list
+pipeline/data/
+            |-- audio_features(wav -> npy)
+            |-- audios(wav)
+            |-- blurred_images(jpg)
+            |-- figures(result of plot)
+            |-- image_features(jpg -> npy)
+            |-- images(jpg)
+            |-- list(list)
+            |-- not_violent_videos
+            |-- npys(on.npy, off.npy)
+            |-- output_videos(mp4)
+            `-- videos(mp4)
 ```
 
 
