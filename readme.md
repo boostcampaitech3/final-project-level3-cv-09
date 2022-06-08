@@ -28,7 +28,7 @@
     - Web Demo : Streamlit
 
 
-![structure](https://user-images.githubusercontent.com/82289435/172592125-89cd43f1-f767-4c52-92d0-d1cd74939586.png)
+![structure](https://user-images.githubusercontent.com/82289435/172627065-63c85b60-adcf-488a-bd5c-0c4f92a8d998.png)
 
 <br>
 
