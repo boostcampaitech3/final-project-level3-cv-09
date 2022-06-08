@@ -173,7 +173,6 @@ def test():
         if st.button("Reset All Data"):
             reset_data()
 
-
     with col3:
         pass
 

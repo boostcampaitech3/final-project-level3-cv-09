@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from collections import deque
+from scipy import stats
 
 def make_figure_from_score(threshold_value, off_path, on_path, index_path, save_path):
     off = np.load(off_path)
@@ -32,44 +33,53 @@ def make_figure_from_score(threshold_value, off_path, on_path, index_path, save_
 
 def get_interval(off_path, threshold_value):
     off_score = np.load(off_path)
-    not_violent_scene = []
+    
+    # 0: not violent, 1: violent
+    scene = []
 
     for i in range(len(off_score)):
-        if float(off_score[i]) >= threshold_value:
-            for j in range(16):
-                not_violent_scene.append(16 * i + j + 1)
-
-    not_violent_scene = sorted(list(set(np.array(not_violent_scene) // 24)))
-    print(not_violent_scene)
-
-    save_scene = []
-
-    if not_violent_scene:
-
-        queue = deque(not_violent_scene)
-
-        start_time = queue.popleft()
-        check_time = start_time
-
-        while queue:
-            end_time = queue.popleft()
-
-            if check_time + 1 == end_time:
-                check_time = end_time
+        for _ in range(16):
+            if off_score[i] < threshold_value:
+                scene.append(0)
             else:
-                save_scene.append((start_time+1, check_time))
+                scene.append(1)
 
-                if queue:
-                    start_time = end_time
-                    check_time = start_time
+    scene_seconds = []
 
-        save_scene.append((start_time+1, end_time))
-        print(save_scene)
-    else:
-        print("No video. Please adjust the threshold.")
-    ##
-    return save_scene
+    for i in range(0, len(scene)-24, 24):
+        scene_seconds.append(int(stats.mode(scene[i:24+i])[0]))
 
+    queue = deque(scene_seconds)
+
+    violence = queue.popleft()
+    start_time = 0
+    end_time = 1
+
+    scene_snippets = []
+
+    while queue:
+        next_violence = queue.popleft()
+        
+        if violence != next_violence:
+            scene_snippets.append((start_time, end_time - 1, violence))
+            
+            violence = next_violence
+
+            start_time = end_time
+
+        end_time += 1
+
+    scene_snippets.append((start_time, end_time, violence))
+
+    print(scene_snippets)
+
+    violent_scene = []
+
+    for scene in scene_snippets:
+        if scene[2] == 1:
+            violent_scene.append(scene[:2])
+
+    return violent_scene
 
 def save_figure(data, threshold_value, save_path):
 
