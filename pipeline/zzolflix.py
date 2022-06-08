@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 import hydralit as hy
 import hydralit_components as hc
 
-import os
+import os, sys
 from PIL import Image
 
 from reset import reset_data, reset_dir
@@ -14,10 +14,14 @@ from video2image import make_image_from_video
 from viodet_video import violence_detection
 
 from pose_filtering import pose_blur
-from violence_localization import violence_localization
+from score2figure import make_figure_from_score
+from kinetics_violence_localization import kinetics_violence_localization
 from make_blurred_video import encoding_video
 from skip import skip
 from mute import mute
+
+sys.path.append("..")
+from blood_detection.yolov5.yolov5_custom.detect import main as blood_detection
 
 app = hy.HydraApp(
   title='ZZOLFLIX',
@@ -135,7 +139,16 @@ def test():
             with hc.HyLoader('Violence Filtering... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 # pose_blur(blur_target_images_path)
                 make_image_from_video(video_path, blurred_images_path)
-                violence_localization(threshold)
+                blood_detection()
+                kinetics_violence_localization(threshold)
+
+                make_figure_from_score(
+                    threshold,
+                    off_path="data/npys/off.npy",
+                    on_path="data/npys/on.npy",
+                    index_path="data/list/output_index.list",
+                    save_path="data/figures",
+                )
 
             with hc.HyLoader('Save Video... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 encoding_video(blurred_images_path,
@@ -143,7 +156,9 @@ def test():
                                 save_video_path)
 
             st.video(os.path.join(save_video_path, 'encoding_video.mp4'))
-
+            image = Image.open('data/figures/score_output_1.png')
+            st.image(image, caption="Score_Output")
+            
         # 영상 스킵
         if st.button("Skip Violent Scene"):
             with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
