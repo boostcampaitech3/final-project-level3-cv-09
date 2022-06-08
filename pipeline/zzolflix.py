@@ -17,7 +17,7 @@ from pose_filtering import pose_blur
 from score2figure import make_figure_from_score
 from kinetics_violence_localization import kinetics_violence_localization
 from make_blurred_video import encoding_video
-from skip import skip
+from skip import skip, skip_ver2
 from mute import mute
 
 sys.path.append("..")
@@ -163,6 +163,11 @@ def test():
         if st.button("Skip Violent Scene"):
             with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 skip(threshold)
+
+        # 영상 스킵 ver2
+        if st.button("Skip Violent Scene_ver2"):
+            with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                skip_ver2(threshold)
 
         # 영상 스킵
         if st.button("Mute Violent Scene"):
