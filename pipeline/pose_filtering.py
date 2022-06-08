@@ -34,19 +34,27 @@ KEYPOINT_DICT = {
 }
 
 # Function to loop through each person detected and render
-def loop_through_people(frame, keypoints_with_scores, edges, confidence_threshold):
+def loop_through_people(frame, keypoints_with_scores, edges, confidence_threshold, target_landmarks):
     for person in keypoints_with_scores:
         # draw_connections(frame, person, edges, confidence_threshold)
         # draw_keypoints(frame, person, confidence_threshold)
-        make_blur(frame, person, confidence_threshold)
+        frame = make_blur(frame, person, confidence_threshold, target_landmarks)
+
+    return frame
         
 
-def make_blur(frame, keypoints, confidence_threshold):
+def make_blur(frame, keypoints, confidence_threshold, target_landmarks):
     y, x, c = frame.shape
+    mask_shape = (y, x, 1)
+    mask = np.full(mask_shape, 0, dtype=np.uint8)
+    temp_img = frame.copy()
     shaped = np.squeeze(np.multiply(keypoints, [y,x,1]))
     # target = [7, 8]
-    target = range(17)
+    target = target_landmarks
     padding = 0.05
+    ksize = 30 
+
+    
     # x_min, y_min = int(np.min(shaped[:,1]*(1-padding))), int(np.min(shaped[:,0]*(1-padding)))
     # x_max, y_max = int(np.max(shaped[:,1]*(1+padding))), int(np.max(shaped[:,0]*(1+padding)))
     # x_min, y_min = x,y
@@ -68,21 +76,28 @@ def make_blur(frame, keypoints, confidence_threshold):
             # blur_img = cv2.resize(blur_img, dsize=(x_max - x_min, y_max - y_min), interpolation=cv2.INTER_NEAREST)
 
             # frame[y_min:y_max, x_min:x_max] = blur_img
-        if kp_conf > 0.5:
-            if idx in target:    
-                offset = 20
+        if kp_conf > confidence_threshold:
+            if idx in target:
+                lmList_5_ky, lmList_5_kx, _ = shaped[5]
+                lmList_6_ky, lmList_6_kx, _ = shaped[6]
+                length = int((lmList_6_ky-lmList_5_ky)**2+(lmList_6_kx-lmList_5_kx)**2)**0.5        
+                offset = int(length)
                 if offset<=ky<=y-offset and offset<=kx<=x-offset:
 
                     kx = int(kx)
                     ky = int(ky)
 
                     blur_img = frame[ky-offset:ky+offset, kx-offset:kx+offset].copy()
-                    blur_img = cv2.resize(blur_img, dsize=None, fx=0.10, fy=0.10, interpolation=cv2.INTER_NEAREST)
-                    blur_img = cv2.resize(blur_img, dsize=(2*offset, 2*offset), interpolation=cv2.INTER_NEAREST)
-
-                    frame[ky-offset:ky+offset, kx-offset:kx+offset] = blur_img
-                    # cv2.circle(frame, (int(kx), int(ky)), 6, (0,255,0), -1)
-
+                    # blur_img = cv2.resize(blur_img, dsize=None, fx=0.10, fy=0.10, interpolation=cv2.INTER_NEAREST)
+                    # blur_img = cv2.resize(blur_img, dsize=(2*offset, 2*offset), interpolation=cv2.INTER_NEAREST)
+                    if len(blur_img) != 0:    
+                        temp_img[ky-offset:ky+offset, kx-offset:kx+offset] = cv2.blur(blur_img, (ksize,ksize))
+                        mask = cv2.circle(mask, (int(kx), int(ky)), int(offset), (255), -1)
+                        mask_inv = cv2.bitwise_not(mask)
+                        img_bg = cv2.bitwise_and(frame, frame, mask=mask_inv)
+                        img_fg = cv2.bitwise_and(temp_img, temp_img, mask=mask)
+                        frame = cv2.add(img_bg, img_fg)
+    return frame
 
 def draw_keypoints(frame, keypoints, confidence_threshold):
     y, x, c = frame.shape
@@ -126,23 +141,41 @@ EDGES = {
     (14, 16): 'c'
 }
 
-def pose_blur(target_image_path):
+def pose_blur(threshold, target_landmarks=range(5,17)):
+    off_path = 'data/npys/off.npy'
+    image_path = 'data/blurred_images'
+    video_name = os.listdir(image_path)[0]
+
+    off_score = np.load(off_path)
+
+    violent_scene = []
+
+    for i in range(len(off_score)):
+        if off_score[i] >= threshold:
+            for j in range(16):
+                violent_scene.append(16*i+j+1)
+    print(violent_scene)
     print('Start Pose Blur')
-    for img_path in [os.path.join(target_image_path, i) for i in os.listdir(target_image_path)]:
-    
-        frame = cv2.imread(img_path)
-        
-        # Resize image
-        img = frame.copy()
-        img = tf.image.resize_with_pad(tf.expand_dims(img, axis=0), 384,640)
-        input_img = tf.cast(img, dtype=tf.int32)
-        
-        # Detection section
-        results = movenet(input_img)
-        keypoints_with_scores = results['output_0'].numpy()[:,:,:51].reshape((6,17,3))
-        
-        # Render keypoints 
-        loop_through_people(frame, keypoints_with_scores, EDGES, 0.1)
-        
-        cv2.imwrite(img_path, frame)
+    if violent_scene:
+        for frame_num in violent_scene:
+            img_path = os.path.join(image_path, video_name, video_name+'-'+str(frame_num).zfill(6)+".jpg")
+            frame = cv2.imread(img_path)
+            
+            # Resize image
+            img = frame.copy()
+            img = tf.image.resize_with_pad(tf.expand_dims(img, axis=0), 384,640)
+            input_img = tf.cast(img, dtype=tf.int32)
+            
+            # Detection section
+            results = movenet(input_img)
+            keypoints_with_scores = results['output_0'].numpy()[:,:,:51].reshape((6,17,3))
+            
+            # Render keypoints 
+            frame = loop_through_people(frame, keypoints_with_scores, EDGES, 0.1, target_landmarks)
+            
+            cv2.imwrite(img_path, frame)
     print('Finish Pose Blur')
+
+# threshold = 0.8
+
+# pose_blur(threshold)
