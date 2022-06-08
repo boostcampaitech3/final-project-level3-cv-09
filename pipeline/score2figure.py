@@ -57,13 +57,13 @@ def get_interval(off_path, threshold_value):
             if check_time + 1 == end_time:
                 check_time = end_time
             else:
-                save_scene.append((start_time, check_time))
+                save_scene.append((start_time+1, check_time))
 
                 if queue:
                     start_time = end_time
                     check_time = start_time
 
-        save_scene.append((start_time, end_time))
+        save_scene.append((start_time+1, end_time))
         print(save_scene)
     else:
         print("No video. Please adjust the threshold.")
