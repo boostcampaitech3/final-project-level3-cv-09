@@ -32,6 +32,15 @@
 
 <br>
 
+### 🎥 Result
+- Violence Detection
+
+![result1](https://user-images.githubusercontent.com/82289435/172740287-fde91d7f-26ae-418f-8696-a0b8ee701afd.png)
+
+- Blood Detection
+
+![result2](https://user-images.githubusercontent.com/82289435/172740293-757b2ade-6a79-4f5e-a018-968f6eb61ecf.png)
+
 ### ⚙ Development Environment
 - GPU : Nvidia Tesla V100
 - OS : Linux Ubuntu 18.04
