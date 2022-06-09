@@ -38,7 +38,9 @@ def skip(threshold):
         next_violence = queue.popleft()
         
         if violence != next_violence:
-            scene_snippets.append((start_time, end_time - 1, violence))
+            
+            if start_time != end_time - 1:
+                scene_snippets.append((start_time, end_time - 1, violence))
             
             violence = next_violence
 
