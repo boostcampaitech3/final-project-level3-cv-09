@@ -34,12 +34,18 @@
 
 ### 🎥 Result
 - Violence Detection
+- Korean Movie Dataset 20 videos
+- PR AUC Offline : 0.8021 Online : 0.7130
 
-![result1](https://user-images.githubusercontent.com/82289435/172740287-fde91d7f-26ae-418f-8696-a0b8ee701afd.png)
+![result1](https://user-images.githubusercontent.com/82289435/173094175-3fd997fd-db21-4879-84db-309d81294016.png)
+
+![result2](https://user-images.githubusercontent.com/82289435/173094196-b5e7b1e6-f649-4aba-93bb-d9d7c920dfe6.png)
+
+<br>
 
 - Blood Detection
 
-![result2](https://user-images.githubusercontent.com/82289435/172740293-757b2ade-6a79-4f5e-a018-968f6eb61ecf.png)
+![result3](https://user-images.githubusercontent.com/82289435/173093751-d3c58dc4-7001-48a1-8118-fb9d0ee35734.png)
 
 ### ⚙ Development Environment
 - GPU : Nvidia Tesla V100
