@@ -19,4 +19,8 @@ def make_feature_list(target_path, save_path, file_name):
             f.write(newline)
 
     return os.path.join(save_path, file_name)
-        
+
+def linux_path_to_window(path):
+    path = path.replace('\\', '/')
+
+    return path

@@ -1,6 +1,6 @@
 import os
 import cv2
-from utils  import createDirectory
+from utils  import createDirectory, linux_path_to_window
 
 def make_image_from_video(video_root_path, image_root_path):
     video_list = [os.path.join(video_root_path, i) for i in os.listdir(video_root_path)]
@@ -11,10 +11,12 @@ def make_image_from_video(video_root_path, image_root_path):
         os.system(f"ffmpeg -hide_banner -loglevel error -y -i {file_path} -map 0 -c:v libx264 -c:a copy {os.path.join('data/output_videos', 'compatible_video.mp4')}")
 
     for file_path, save_path in zip(video_list, image_list):
+        save_path = linux_path_to_window(save_path)
         createDirectory(save_path[:-4])
+        file_path = linux_path_to_window(file_path)
         start = file_path.find('/', file_path.find('/') + 1)
         video_name = file_path[start+1:-4]
 
-        os.system("ffmpeg -hide_banner -loglevel error -i "+file_path+' -vf fps=24 -s 640x360 -qscale:v 4 -b 800k '+save_path[:-4]+'/'+video_name+'-%6d.jpg'" < /dev/null")
+        os.system("ffmpeg -hide_banner -loglevel error -i "+file_path+' -vf fps=24 -s 640x360 -qscale:v 4 -b 800k '+save_path[:-4]+'/'+video_name+'-%6d.jpg'" > $null")
         
         print('convert mp4 to jpg :', video_name)
