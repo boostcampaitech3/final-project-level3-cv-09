@@ -65,6 +65,7 @@ conda activate {your_env_name}
 ```
 - install requirements
 ```
+conda install pytorch torchvision torchaudio cudatoolkit={depend on the CUDA version} -c pytorch -c conda-forge
 pip install -r requirements.txt
 apt-get install libsndfile1
 apt-get update
