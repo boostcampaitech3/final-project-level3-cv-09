@@ -40,7 +40,7 @@ MODEL_NAME = 'inference_graph'
 txtfile = open("hypotheses.txt", "w")
 # Grab path to current working directory
 # CWD_PATH = os.getcwd()
-CWD_PATH = "../ViolenceDetectionAndLocalization"
+CWD_PATH = "..\\ViolenceDetectionAndLocalization"
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.

@@ -36,9 +36,9 @@ app = hy.HydraApp(
 @app.addapp(title='', is_home=True, icon='')
 def home():
     # CSS
-    with open('assets/css/main.css') as f:
+    with open('assets/css/main.css', encoding='utf-8') as f:
         CSS_TEXT = f.read()
-    with open('assets/html/index.html') as f:
+    with open('assets/html/index.html', encoding='utf-8') as f:
         HTML_TEXT = f.read()
     
         components.html(''
@@ -127,7 +127,7 @@ def test():
             with hc.HyLoader('Violence Detection... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 violence_detection(threshold)
 
-            image = Image.open('data/figures/score_output_1.png')
+            image = Image.open('data/figures/score_output_1.png', encoding='utf-8')
 
             st.video(os.path.join(save_video_path, 'compatible_video.mp4'))
 
@@ -156,7 +156,7 @@ def test():
                                 save_video_path)
 
             st.video(os.path.join(save_video_path, 'encoding_video.mp4'))
-            image = Image.open('data/figures/score_output_1.png')
+            image = Image.open('data/figures/score_output_1.png', encoding='utf-8')
             st.image(image, caption="Score_Output")
             
         # 영상 스킵

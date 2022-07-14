@@ -1,2 +1,8 @@
 __pycache__
 data
+*.mp4
+*.pbtxt
+*.pb
+*.onnx
+hypotheses.txt
+action_recognition_kinetics.txt
