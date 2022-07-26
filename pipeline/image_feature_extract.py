@@ -50,7 +50,8 @@ class ImageFeatureExtractor:
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=2,
-            pin_memory=True,
+            # pin_memory=True,
+            pin_memory=False,
         )
 
         second_dataset = Dataset(
@@ -61,7 +62,8 @@ class ImageFeatureExtractor:
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=2,
-            pin_memory=True,
+            #pin_memory=True,
+            pin_memory=False,
         )
 
         third_dataset = Dataset(
@@ -72,7 +74,8 @@ class ImageFeatureExtractor:
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=2,
-            pin_memory=True,
+            #pin_memory=True,
+            pin_memory=False,
         )
 
         fourth_dataset = Dataset(
@@ -83,7 +86,8 @@ class ImageFeatureExtractor:
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=2,
-            pin_memory=True,
+            #pin_memory=True,
+            pin_memory=False,
         )
 
         center_dataset = Dataset(
@@ -94,7 +98,8 @@ class ImageFeatureExtractor:
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=2,
-            pin_memory=True,
+            #pin_memory=True,
+            pin_memory=False,
         )
 
         # center_dataloader : center|
