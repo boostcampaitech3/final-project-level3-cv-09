@@ -19,6 +19,7 @@ from kinetics_violence_localization import kinetics_violence_localization
 from make_blurred_video import encoding_video
 from skip import skip
 from mute import mute
+from alternative import alternative
 
 sys.path.append("..")
 from blood_detection.yolov5.yolov5_custom.detect import main as blood_detection
@@ -168,6 +169,11 @@ def test():
         if st.button("Mute Violent Scene"):
             with hc.HyLoader('Mute violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
                 mute(threshold)
+
+        # 대체 이미지
+        if st.button("Alternative Violent Scene"):
+            with hc.HyLoader('Alternative violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                alternative(threshold)
 
         # 데이터를 초기화 하는 버튼        
         if st.button("Reset All Data"):
