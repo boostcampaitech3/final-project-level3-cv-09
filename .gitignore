@@ -1,2 +1,8 @@
 __pycache__
 data
+*.mp4
+*.onnx
+inference_graph
+*.pt
+*.Identifier
+hypotheses.txt
