@@ -71,6 +71,7 @@ class Annotator:
         assert im.data.contiguous, 'Image not contiguous. Apply np.ascontiguousarray(im) to Annotator() input images.'
         non_ascii = not is_ascii(example)  # non-latin labels, i.e. asian, arabic, cyrillic
         self.pil = pil or non_ascii
+        self.png_bubble = cv2.imread("assets/alter_images/bubble.png", cv2.IMREAD_UNCHANGED)
         if self.pil:  # use PIL
             self.im = im if isinstance(im, Image.Image) else Image.fromarray(im)
             self.draw = ImageDraw.Draw(self.im)
@@ -78,6 +79,7 @@ class Annotator:
                                        size=font_size or max(round(sum(self.im.size) / 2 * 0.035), 12))
         else:  # use cv2
             self.im = im
+        self.im_h, self.im_w = self.im.shape[:2]
         self.lw = line_width or max(round(sum(im.shape) / 2 * 0.003), 2)  # line width
 
     def box_label(self, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
@@ -134,6 +136,30 @@ class Annotator:
         x1, y1, x2, y2 = int(box[0]), int(box[1]), int(box[2]), int(box[3])
         blur_img = self.im[y1:y2, x1:x2].copy()
         self.im[y1:y2, x1:x2] = cv2.blur(blur_img, (ksize,ksize))
+
+    def bubble(self, box):
+        # print(box) 609 353 663 392 좌하단 -> 우상단
+        x1, y1, x2, y2 = int(box[0]), int(box[1]), int(box[2]), int(box[3])
+
+        img_fg = cv2.resize(self.png_bubble, dsize=(x2-x1, y2-y1), interpolation=cv2.INTER_AREA)
+
+        #--② 알파채널을 이용해서 마스크와 역마스크 생성
+        _, mask = cv2.threshold(img_fg[:,:,3], 1, 255, cv2.THRESH_BINARY)
+        mask_inv = cv2.bitwise_not(mask)
+
+        #--③ 전경 영상 크기로 배경 영상에서 ROI 잘라내기
+        img_fg = cv2.cvtColor(img_fg, cv2.COLOR_BGRA2BGR)
+        roi = self.im[y1:y2, x1:x2]
+
+        #--④ 마스크 이용해서 오려내기
+        masked_fg = cv2.bitwise_and(img_fg, img_fg, mask=mask)
+        masked_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
+
+        #--⑥ 이미지 합성
+        added = masked_fg + masked_bg
+        alpha = 0.4
+        self.im[y1:y2, x1:x2] = cv2.addWeighted(added, alpha, self.im[y1:y2, x1:x2], (1-alpha), 0) 
+        # self.im[y1:y2, x1:x2] = added
 
     def rectangle(self, xy, fill=None, outline=None, width=1):
         # Add rectangle to image (PIL-only)
