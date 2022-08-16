@@ -1,0 +1,4 @@
+fastapi==0.68.0
+pillow==9.0.1
+python-multipart==0.0.5 
+aiofiles==0.4.0
