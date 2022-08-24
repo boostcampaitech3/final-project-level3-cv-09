@@ -1,5 +1,4 @@
 import numpy as np
-import streamlit as st
 from collections import deque
 from scipy import stats
 import os
@@ -65,5 +64,3 @@ def mute(threshold):
     ffmpeg_cmd = ', '.join(vol_control_list)
 
     os.system(f'ffmpeg -hide_banner -loglevel error -y -i data/output_videos/compatible_video.mp4 -af "{ffmpeg_cmd}" data/output_videos/muted_video.mp4')
-
-    st.video(f'data/output_videos/muted_video.mp4')

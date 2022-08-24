@@ -1,5 +1,4 @@
 import numpy as np
-import streamlit as st
 from collections import deque
 from scipy import stats
 import os
@@ -132,11 +131,10 @@ def alternative(threshold):
 
     # Alternative image
     gifs_path = [
-        "assets/alter_images/mococo_0.gif",
-        "assets/alter_images/mococo_1.gif",
-        "assets/alter_images/mococo_2.gif",
-        "assets/alter_images/mococo_3.gif",
+        "data/alter_images/mococo_0.gif",
+        "data/alter_images/mococo_1.gif",
+        "data/alter_images/mococo_2.gif",
+        "data/alter_images/mococo_3.gif",
     ]
 
     alternative_video("data/output_videos/compatible_video.mp4", gifs_path, violent_scene)
-    st.video(f'data/output_videos/altered_video_final.mp4')
