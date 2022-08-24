@@ -31,7 +31,7 @@ from collections import deque
 # sys.path.append("..")
 tf.compat.v1.disable_v2_behavior()
 # Import utilites
-from ..models.ViolenceDetectionAndLocalization.local_utils import label_map_util
+from models.ViolenceDetectionAndLocalization.local_utils import label_map_util
 # from local_utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
@@ -39,8 +39,7 @@ MODEL_NAME = 'inference_graph'
 
 # txtfile = open("hypotheses.txt", "w")
 # Grab path to current working directory
-# CWD_PATH = os.getcwd()
-CWD_PATH = "../models/ViolenceDetectionAndLocalization"
+CWD_PATH = "models/ViolenceDetectionAndLocalization"
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
@@ -117,14 +116,11 @@ detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
 def kinetics_violence_localization(threshold):
-
-    off_path = '../data/npys/off.npy'
-    original_image_path = '../data/images'
-    image_path = '../data/blurred_images'
+    off_path = 'data/npys/off.npy'
+    original_image_path = 'data/images'
+    image_path = 'data/blurred_images'
     video_name = os.listdir(image_path)[0]
-
     off_score = np.load(off_path)
-
     violent_scene = []
 
     for i in range(len(off_score)):

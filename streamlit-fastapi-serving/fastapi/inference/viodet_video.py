@@ -14,13 +14,13 @@ from utils.audio_feature_extract import AudioFeatureExtractor
 
 data_path = "data"
 model_path = "models"
-XDVioDet_path = model_path+"/XDVioDet"
-pytorchi3d_path = model_path+"/pytorchi3d"
-video_root_path = data_path+"/videos"  # feature를 추출할 비디오들이 담긴 폴더 지정
-image_root_path = data_path+"/images"  # jpg가 저장되는 폴더 경로 지정
+XDVioDet_path = model_path + "/XDVioDet"
+pytorchi3d_path = model_path + "/pytorchi3d"
+video_root_path = data_path + "/videos"  # feature를 추출할 비디오들이 담긴 폴더 지정
+image_root_path = data_path + "/images"  # jpg가 저장되는 폴더 경로 지정
 createDirectory(image_root_path)
 
-output_directory = data_path+"/audios"  # wav가 저장되는 폴더 경로
+output_directory = data_path + "/audios"  # wav가 저장되는 폴더 경로
 createDirectory(output_directory)
 
 
