@@ -1,14 +1,12 @@
 import io
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse
+from starlette.responses import Response
 from pydantic import BaseModel
 
 from inference.viodet_video import get_violencer, get_violence
 from inference.blood_detection import main as blood_detection
-# from models.yolov5.detect import main as blood_detection
-
 from inference.kinetics_violence_localization import kinetics_violence_localization
-from starlette.responses import Response
 
 from utils.file_handler import make_image_from_video
 from utils.pose_filtering import pose_blur
@@ -17,15 +15,17 @@ from utils.make_blurred_video import encoding_video
 from utils.skip import skip
 from utils.mute import mute
 from utils.alternative import alternative
+from utils.reset import reset_data
 
 
+# set default threshold
 threshold = 0.8
 model_IFE, model_AFE = get_violencer()
 
 app = FastAPI(
-    title="DeepLabV3 image segmentation",
-    description="""Obtain semantic segmentation maps of the image in input via DeepLabV3 implemented in PyTorch.
-                           Visit this URL at port 8501 for the streamlit interface.""",
+    title="HIPIPE Video Violence Detectiopn and Filtering",
+    description="""Multimodal to get the video's violence score from the input.
+                To view the Streamlit interface, visit this URL on port 8501.""",
     version="0.1.0",
 )
 
@@ -67,7 +67,7 @@ async def get_violence_video():
 
 
 @app.get("/violence_filtering")
-async def get_filtering_video():
+async def get_filtered_video():
     """Get violence video from video file"""
     # images_path = 'data/images'
     video_path = 'data/videos'
@@ -93,3 +93,39 @@ async def get_filtering_video():
     some_file_path = f"data/output_videos/encoding_video.mp4"
     file_like = open(some_file_path, mode="rb")
     return StreamingResponse(file_like, media_type="video/mp4")
+
+
+@app.get("/violence_skipping")
+async def get_skipped_video():
+    """Get violence video from video file"""
+    skip(threshold)
+
+    some_file_path = f"data/output_videos/not_violent_video.mp4"
+    file_like = open(some_file_path, mode="rb")
+    return StreamingResponse(file_like, media_type="video/mp4")
+
+
+@app.get("/violence_muting")
+async def get_muted_video():
+    """Get violence video from video file"""
+    mute(threshold)
+
+    some_file_path = f"data/output_videos/muted_video.mp4"
+    file_like = open(some_file_path, mode="rb")
+    return StreamingResponse(file_like, media_type="video/mp4")
+
+
+@app.get("/violence_altering")
+async def get_altered_video():
+    """Get violence video from video file"""
+    alternative(threshold)
+
+    some_file_path = f"data/output_videos/altered_video_final.mp4"
+    file_like = open(some_file_path, mode="rb")
+    return StreamingResponse(file_like, media_type="video/mp4")
+
+
+@app.get("/reset_data")
+async def get_reset_data_call():
+    reset_data()
+    return {"message": "reset data"}

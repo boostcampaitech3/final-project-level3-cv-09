@@ -1,6 +1,5 @@
 from operator import not_
 import numpy as np
-import streamlit as st
 from collections import deque
 from scipy import stats
 import os
@@ -61,7 +60,6 @@ def skip(threshold):
     print(not_violent_scene)
 
     if not_violent_scene:
-
         # key_frame을 1 frame 마다
         print('changing key frame interval...')
         os.system(f'ffmpeg -hide_banner -loglevel error -y -i data/output_videos/compatible_video.mp4 -g 1 data/output_videos/key_frame.mp4')
@@ -78,10 +76,3 @@ def skip(threshold):
 
         print('concatenating unviolent videos...')
         os.system('ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i data/not_violent_videos/file_list.txt -c copy data/output_videos/not_violent_video.mp4')
-
-        st.video('data/output_videos/not_violent_video.mp4')
-    else:
-        st.write('No video. Please adjust the threshold.')
-
-
-

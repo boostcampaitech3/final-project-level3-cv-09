@@ -1,15 +1,21 @@
 # streamlit run your_script.py --server.port 30001
+from genericpath import isfile
 from urllib import response
 import streamlit as st
 import streamlit.components.v1 as components
 import hydralit as hy
 import hydralit_components as hc
 
-import json
 import io, os, sys
 import requests
 from PIL import Image
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+
+# TODO
+# import asyncio
+# import aiohttp
+# import aiofiles
+
 
 # from utils.reset import reset_data, reset_dir
 # from utils.file_handler import make_image_from_video
@@ -38,21 +44,67 @@ backend = "http://0.0.0.0:8000/"
 #     return r
 
 
-def set_threshold_call(threshold, api):
+def get_violence_video_call(api: str):
     rest_api = backend + api
+    response = requests.get(rest_api)
 
-    data = {'threshold': threshold}
-    response = requests.post(rest_api, data=json.dumps(data))
     return response
 
 
-def violence_detection_call(video, api: str):
+def post_threshold_call(threshold: float, api: str):
+    rest_api = backend + api
+    data = {'threshold': threshold}
+    response = requests.post(rest_api, json=data)
+
+    return response
+
+
+def post_violence_detection_call(video, api: str):
     rest_api = backend + api
     message = MultipartEncoder(fields={"video_file": (video.name, video, "video/mp4")})
 
     response = requests.post(
         rest_api, data=message, headers={"Content-Type": message.content_type}, timeout=300000
     )
+    return response
+
+
+def get_filtered_video_call(api: str):
+    # "violence_filtering"
+    rest_api = backend + api
+    response = requests.get(rest_api)
+
+    return response
+
+
+def get_skipped_video_call(api: str):
+    # "violence_skipping"
+    rest_api = backend + api
+    response = requests.get(rest_api)
+
+    return response
+
+
+def get_muted_video_call(api: str):
+    # "violence_muting"
+    rest_api = backend + api
+    response = requests.get(rest_api)
+
+    return response
+
+
+def get_alternative_video_call(api: str):
+    # "violence_altering"
+    rest_api = backend + api
+    response = requests.get(rest_api)
+
+    return response
+
+
+def get_reset_data_call(api: str):
+    rest_api = backend + api
+    response = requests.get(rest_api)
+
     return response
 
 
@@ -97,7 +149,6 @@ def home():
 
 @app.addapp(title='Get Started', icon='📽')
 def test():
-
     hide_streamlit_style = """
         <style>
             #MainMenu {visibility: hidden;}
@@ -136,82 +187,70 @@ def test():
     with col2:
         # st.title("Violence Detection")
         uploaded_file = st.file_uploader("Choose a Video", type=['mp4'])
-
-        # # video save path
-        # FILE_OUTPUT = 'data/videos'
-
-        # if uploaded_file:
-        #     with open(os.path.join(FILE_OUTPUT, uploaded_file.name), "wb") as out_file:  # open for [w]riting as [b]inary
-        #         out_file.write(uploaded_file.read())
-
         threshold = st.slider("Set a Threshold", min_value=0.00, max_value=1.0, step=0.05, value=0.8)
 
         # Violence Detection
         if st.button("Violence Detection"):
-            # with hc.HyLoader('Violence Detection... Please Wait...', hc.Loaders.standard_loaders,index=5):
-            #     violence_detection(threshold)
-
-            # image = Image.open('data/figures/score_output_1.png')
-            # st.video(os.path.join(save_video_path, 'compatible_video.mp4'))
-            # st.image(image, caption="Score_Output")
             if uploaded_file:
-                # set_threshold_call(threshold, "set_threshold")
-                response_vd = violence_detection_call(uploaded_file, "violence_detection")
+                # TODO async processing
+                # asyncio.run(asyncio.wait(post_threshold_call(threshold, "set_threshold")))
+                
+                with hc.HyLoader('Violence Detection... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                    post_threshold_call(threshold, "set_threshold")
+                    # violence detection
+                    response_vd = post_violence_detection_call(uploaded_file, "violence_detection")
+                    # download video
+                    response_video = get_violence_video_call("violence_detection")
+                
+                st.video(response_video.content)
+                # convert scored graph
                 vd_score_image = Image.open(io.BytesIO(response_vd.content)).convert("RGB")
                 st.image(vd_score_image, caption="Score_Output")
+                vd_score_image.save("data/figures/score_output_1.png") # TODO if not exist dir -> create
             else:
                 # handle case with no video
                 st.write("Insert an video!")
 
         # Violence Filtering
         if st.button("Violence Filtering"):
-            # blur_target_images_path = os.path.join(images_path, os.listdir(images_path)[0])
-            # with hc.HyLoader('Violence Filtering... Please Wait...', hc.Loaders.standard_loaders,index=5):
-            #     # pose_blur(blur_target_images_path)
-            #     make_image_from_video(video_path, blurred_images_path)
-            #     blood_detection()
-            #     kinetics_violence_localization(threshold)
+            vd_score_image = Image.open('data/figures/score_output_1.png')
+            # TODO change check Violence Detection
+            if vd_score_image:
+                with hc.HyLoader('Violence Filtering... Please Wait...', hc.Loaders.standard_loaders,index=5):
+                    post_threshold_call(threshold, "set_threshold")
+                    # violence filtering and download video
+                    response_video = get_filtered_video_call("violence_filtering")
 
-            #     make_figure_from_score(
-            #         threshold,
-            #         off_path="data/npys/off.npy",
-            #         on_path="data/npys/on.npy",
-            #         index_path="data/list/output_index.list",
-            #         save_path="data/figures",
-            #     )
+                    st.video(response_video.content)
+                    st.image(vd_score_image, caption="Score_Output")
+            else:
+                # handle case with no violence detection
+                st.write("Start by Violence Detection!")
 
-            # with hc.HyLoader('Save Video... Please Wait...', hc.Loaders.standard_loaders,index=5):
-            #     encoding_video(blurred_images_path,
-            #                     audios_path,
-            #                     save_video_path)
-
-            # st.video(os.path.join(save_video_path, 'encoding_video.mp4'))
-            # image = Image.open('data/figures/score_output_1.png')
-            # st.image(image, caption="Score_Output")
-            pass
-            
         # 영상 스킵
         if st.button("Skip Violent Scene"):
             with hc.HyLoader('Skip violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                # skip(threshold)
-                pass
+                post_threshold_call(threshold, "set_threshold")
+                response_video = get_skipped_video_call("violence_skipping")
+                st.video(response_video.content)
 
-        # 영상 스킵
+        # 영상 음소거
         if st.button("Mute Violent Scene"):
             with hc.HyLoader('Mute violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                # mute(threshold)
-                pass
+                post_threshold_call(threshold, "set_threshold")
+                response_video = get_muted_video_call("violence_muting")
+                st.video(response_video.content)
 
         # 대체 이미지
         if st.button("Alternative Violent Scene"):
             with hc.HyLoader('Alternative violent scenes... Please Wait...', hc.Loaders.standard_loaders,index=5):
-                # alternative(threshold)
-                pass
+                post_threshold_call(threshold, "set_threshold")
+                response_video = get_alternative_video_call("violence_altering")
+                st.video(response_video.content)
 
-        # 데이터를 초기화 하는 버튼    
+        # 데이터를 초기화 하는 버튼
         if st.button("Reset All Data"):
-            # reset_data()
-            pass
+            get_reset_data_call("reset_data")
 
     with col3:
         pass
