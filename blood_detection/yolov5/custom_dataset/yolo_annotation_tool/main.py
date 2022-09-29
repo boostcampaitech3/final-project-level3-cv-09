@@ -71,9 +71,9 @@ class LabelTool():
         self.STATE['x'], self.STATE['y'] = 0, 0
 
         # reference to bbox
-        self.bboxIdList = []
+        self.bboxIdList = [] # rectangle(bbox) object
         self.bboxId = None
-        self.bboxList = []
+        self.bboxList = [] # bbox coordinates
         self.bboxListCls = []
         self.hl = None
         self.vl = None
@@ -123,6 +123,11 @@ class LabelTool():
         self.lb1.grid(row = 2, column = 2,  sticky = W+N,columnspan=2)
         self.listbox = Listbox(self.frame, width = 30, height = 12)
         self.listbox.grid(row = 3, column = 2, sticky = N,columnspan=2)
+        
+        # 선택된 bbox 표시하는 기능 추가
+        self.listbox.bind("<space>", self.selBbox) # Bounding boxes의 요소를 클릭한 상태로 spacebar를 누르면 bbox가 magenta로 색상 변경.
+        self.listbox.bind("<KeyRelease-space>", self.deselBbox) # speacebar를 떼면 bbox가 원래 색상으로 변경.
+
         self.btnDel = Button(self.frame, text = 'Delete', command = self.delBBox)
         self.btnDel.grid(row = 4, column = 2, sticky = W+E+N,columnspan=2)
         self.btnClear = Button(self.frame, text = 'ClearAll', command = self.clearBBox)
@@ -322,6 +327,24 @@ class LabelTool():
         self.bboxIdList = []
         self.bboxList = []
         self.bboxListCls = []
+
+    def selBbox(self, event):
+        sel = self.listbox.curselection()
+
+        if len(sel) != 1:
+            return
+
+        idx = int(sel[0])
+        self.mainPanel.itemconfig(self.bboxIdList[idx], outline='magenta')
+
+    def deselBbox(self, event):
+        sel = self.listbox.curselection()
+
+        if len(sel) != 1:
+            return
+        
+        idx = int(sel[0])
+        self.mainPanel.itemconfig(self.bboxIdList[idx], outline=COLORS[int(self.bboxListCls[idx])])
 
     def prevImage(self, event = None):
         self.saveImage()
