@@ -77,6 +77,7 @@ class LabelTool():
         self.bboxListCls = []
         self.hl = None
         self.vl = None
+        self.bboxResize = ''
 
         # ----------------- GUI stuff ---------------------
         # dir entry & load
@@ -99,10 +100,10 @@ class LabelTool():
         self.mainPanel.bind("<Button-1>", self.mouseClick)
         self.mainPanel.bind("<Motion>", self.mouseMove)
         self.parent.bind("<Escape>", self.cancelBBox)  # press <Espace> to cancel current bbox
-        self.parent.bind("s", self.cancelBBox)
+        # self.parent.bind("s", self.cancelBBox)
         self.parent.bind("<Left>", self.prevImage) # press 'a' to go backforward
-        self.parent.bind("<Right>", self.nextImage) # press 'd' to go forward
-        self.mainPanel.grid(row = 1, column = 1, rowspan = 4, sticky = W+N)
+        self.parent.bind("<Right>", self.nextImage) # press 'd' to go forwardsss
+        self.mainPanel.grid(row = 1, column = 1, rowspan = 5, sticky = W+N)
 
         # showing bbox info & delete bbox
         self.tkvar = StringVar(self.parent)
@@ -123,21 +124,25 @@ class LabelTool():
         self.lb1.grid(row = 2, column = 2,  sticky = W+N,columnspan=2)
         self.listbox = Listbox(self.frame, width = 30, height = 12)
         self.listbox.grid(row = 3, column = 2, sticky = N,columnspan=2)
-        
         # 선택된 bbox 표시하는 기능 추가
         self.listbox.bind("<Button-1>", self.selBbox) 
         self.listbox.bind("<ButtonRelease-1>", self.deselBbox)
         # self.listbox.bind("<space>", self.selBbox) # Bounding boxes의 요소를 클릭한 상태로 spacebar를 누르면 bbox가 magenta로 색상 변경.
         # self.listbox.bind("<KeyRelease-space>", self.deselBbox) # speacebar를 떼면 bbox가 원래 색상으로 변경.
-
         self.btnDel = Button(self.frame, text = 'Delete', command = self.delBBox)
         self.btnDel.grid(row = 4, column = 2, sticky = W+E+N,columnspan=2)
+
+        # bounding box 사이즈 조절 기능 추가
+        self.resizelbl = Label(self.frame, text = '')
+        self.resizelbl.grid(row = 5, column = 2, sticky = N,columnspan=2)
+        self.parent.bind("<Key>", self.resizeBbox)
+
         self.btnClear = Button(self.frame, text = 'ClearAll', command = self.clearBBox)
-        self.btnClear.grid(row = 5, column = 2, sticky = W+E+N,columnspan=2)
+        self.btnClear.grid(row = 6, column = 2, sticky = W+E+N,columnspan=2)
 
         # control panel for image navigation
         self.ctrPanel = Frame(self.frame)
-        self.ctrPanel.grid(row = 6, column = 1, columnspan = 2, sticky = W+E)
+        self.ctrPanel.grid(row = 7, column = 1, columnspan = 2, sticky = W+E)
         self.prevBtn = Button(self.ctrPanel, text='<< Prev', width = 10, command = self.prevImage)
         self.prevBtn.pack(side = LEFT, padx = 5, pady = 3)
         self.nextBtn = Button(self.ctrPanel, text='Next >>', width = 10, command = self.nextImage)
@@ -167,7 +172,7 @@ class LabelTool():
         self.disp.config(text = 'x: 000, y: 000')
 
         self.frame.columnconfigure(1, weight = 1)
-        self.frame.rowconfigure(4, weight = 1)
+        self.frame.rowconfigure(5, weight = 1)
     def callbackFunc(self,name,index,mode):
         value=self.tkvar.get()
         widget = self.popupMenu
@@ -348,6 +353,110 @@ class LabelTool():
         idx = int(sel[0])
         self.mainPanel.itemconfig(self.bboxIdList[idx], outline='darkolivegreen')
 
+    def resizeBbox(self, event):
+
+        if event.char == '[':
+            self.resizelbl.config(text='-')
+            self.bboxResize = '-'
+
+        elif event.char == ']':
+            self.resizelbl.config(text='+')
+            self.bboxResize = '+'
+
+        elif event.char == '\\':
+            self.resizelbl.config(text='')
+            self.bboxResize = ''
+
+        else:
+            sel = self.listbox.curselection()
+
+            if len(sel) != 1:
+                return
+
+            idx = int(sel[0])
+
+            if self.bboxResize == '+':
+                if event.char == 'w':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    ymin -= 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 'a':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    xmin -= 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 's':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    ymax += 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 'd':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    xmax += 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+            elif self.bboxResize == '-':
+                if event.char == 'w':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    ymax -= 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 'a':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    xmax -= 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 's':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    ymin += 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
+                elif event.char == 'd':
+                    xmin, ymin, xmax, ymax = self.mainPanel.coords(self.bboxIdList[idx])
+                    
+                    xmin += 1
+
+                    self.mainPanel.coords(self.bboxIdList[idx], xmin, ymin, xmax, ymax)
+                    self.bboxList[idx] = (xmin, ymin, xmax, ymax)
+
+                    self.saveImage()
+
     def prevImage(self, event = None):
         self.saveImage()
         if self.cur > 1:
@@ -376,6 +485,8 @@ class LabelTool():
         # self.popupMenu['menu'].entryconfig(ind, background=COLORS[ind])
         self.cur_cls_id = ind
 
+    # yolo style annotation(이미지 크기에 대한 비율 값)
+    # (centerX, centerY, w, h)
     def convert(self,size, box):
         dw = 1./size[0]
         dh = 1./size[1]
