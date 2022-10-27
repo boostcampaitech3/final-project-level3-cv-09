@@ -69,10 +69,11 @@ def post_violence_detection_call(video, api: str):
     return response
 
 
-def get_filtered_video_call(api: str):
+def post_filtering_video_call(filter_num: int, api: str):
     # "violence_filtering"
     rest_api = backend + api
-    response = requests.get(rest_api)
+    data = {'filter_num': filter_num}
+    response = requests.post(rest_api, json=data)
 
     return response
 
@@ -211,15 +212,20 @@ def test():
                 # handle case with no video
                 st.write("Insert an video!")
 
+        # Select Filter UI
+        my_filter = ['blur', 'bubble']
+        status = st.radio('Select the type of Filtering', my_filter)
+        filter_num = 2 if status == my_filter[1] else 1
         # Violence Filtering
         if st.button("Violence Filtering"):
             vd_score_image = Image.open('data/figures/score_output_1.png')
             # TODO change check Violence Detection
+
             if vd_score_image:
                 with hc.HyLoader('Violence Filtering... Please Wait...', hc.Loaders.standard_loaders,index=5):
                     post_threshold_call(threshold, "set_threshold")
                     # violence filtering and download video
-                    response_video = get_filtered_video_call("violence_filtering")
+                    response_video = post_filtering_video_call(filter_num, "violence_filtering")
 
                     st.video(response_video.content)
                     st.image(vd_score_image, caption="Score_Output")
