@@ -30,12 +30,17 @@ app = FastAPI(
 )
 
 
-class Item(BaseModel):
+# API parameter class - threshold score
+class Threshold(BaseModel):
     threshold: float
+
+# API parameter class - filtering type num
+class Filter(BaseModel):
+    filter_num: int
 
 
 @app.post("/set_threshold")
-async def set_threshold(item: Item):
+async def set_threshold(item: Threshold):
     threshold = item.threshold
     print({"info": f"set threshold '{threshold}'"})
 
@@ -66,19 +71,22 @@ async def get_violence_video():
     return StreamingResponse(file_like, media_type="video/mp4")
 
 
-@app.get("/violence_filtering")
-async def get_filtered_video():
-    """Get violence video from video file"""
+@app.post("/violence_filtering")
+async def post_filtering_video(item: Filter):
+    """Post violence filtering video from video file"""
     # images_path = 'data/images'
     video_path = 'data/videos'
     blurred_images_path = 'data/blurred_images'
     audios_path = 'data/audios'
     save_video_path = 'data/output_videos'
 
+    filter_num = item.filter_num
+    print({"info": f"set blood detection filter num '{filter_num}'"})
+
     # blur_target_images_path = os.path.join(images_path, os.listdir(images_path)[0])
     # pose_blur(blur_target_images_path)
     make_image_from_video(video_path, blurred_images_path)
-    blood_detection()
+    blood_detection(filter_num) # blur 1, bubble 2
     kinetics_violence_localization(threshold)
 
     make_figure_from_score(

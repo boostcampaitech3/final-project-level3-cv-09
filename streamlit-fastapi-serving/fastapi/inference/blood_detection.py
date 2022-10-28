@@ -95,6 +95,7 @@ def run(
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
+        filter_num=1,  # filtering case num (blur 1, bubble 2)
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -190,8 +191,10 @@ def run(
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         # annotator.box_label(xyxy, label, color=colors(c, True))
                         # annotator.mosaic_label(xyxy)
-                        # annotator.blur(xyxy)
-                        annotator.bubble(xyxy)
+                        if filter_num == 1:
+                            annotator.blur(xyxy)
+                        elif filter_num == 2:
+                            annotator.bubble(xyxy)
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
@@ -263,7 +266,7 @@ args = option.opt
 '''
 
 
-def parse_opt():
+def parse_opt(filter_num):
     image_path = 'data/blurred_images'
     video_name = os.listdir(image_path)[0]
     # parser = argparse.ArgumentParser()
@@ -309,6 +312,7 @@ def parse_opt():
         'line_thickness': 3,
         'hide_labels': False,
         'hide_conf': False,
+        'filter_num' : filter_num,
     })
 
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
@@ -316,8 +320,9 @@ def parse_opt():
     return opt
 
 
-def main():
-    opt = parse_opt()
+# set blur(1) or bubble(2) Violence Filtering API parameter
+def main(filter_num):
+    opt = parse_opt(filter_num)
     check_requirements(exclude=('tensorboard', 'thop'))
     run(**vars(opt))
 
